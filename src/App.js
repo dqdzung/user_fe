@@ -7,6 +7,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <h1>HELLO WORLD</h1>
+        <h2>Test firebase hosting</h2>
       </header>
     </div>
   );
