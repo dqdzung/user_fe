@@ -1,0 +1,10 @@
+.login, .navbar-nav a {
+	text-decoration: none;
+	color: rgba(255,255,255,.55);
+  padding: 10px;
+}
+
+.navbar-nav a:hover, .login:hover {
+	color: white;
+  cursor: pointer;
+}
