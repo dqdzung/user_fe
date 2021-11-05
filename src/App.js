@@ -22,25 +22,25 @@ function App() {
 		setUser("user");
 	};
 
-  useEffect(() => {
-    fetchUser();
-  }, [])
+	useEffect(() => {
+		fetchUser();
+	}, []);
 
 	return (
 		<div className="App">
-      <AuthContext.Provider value={{user, setUser}}> 
-			<BrowserRouter>
-				<MainNav />
-				<Container>
-					<Routes>
-						<Route path="/" element={<Home />}></Route>
-						<Route path="/products" element={<Products />}></Route>
-						<Route path="/news" element={<News />}></Route>
-						<Route path="/about" element={<About />}></Route>
-					</Routes>
-				</Container>
-			</BrowserRouter>
-      </AuthContext.Provider> 
+			<AuthContext.Provider value={{ user, setUser }}>
+				<BrowserRouter>
+					<MainNav />
+					<Container>
+						<Routes>
+							<Route path="/" element={<Home />}></Route>
+							<Route path="/products" element={<Products />}></Route>
+							<Route path="/news" element={<News />}></Route>
+							<Route path="/about" element={<About />}></Route>
+						</Routes>
+					</Container>
+				</BrowserRouter>
+			</AuthContext.Provider>
 		</div>
 	);
 }

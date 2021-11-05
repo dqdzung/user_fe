@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import { Form, Button } from "react-bootstrap";
 import { AuthContext } from "../../App"
-import "./MyForm.style.css";
+import "./UserForm.style.css";
 
 const MyForm = ({ type, close, clickLinkEvent }) => {
 	const [email, setEmail] = useState("");
