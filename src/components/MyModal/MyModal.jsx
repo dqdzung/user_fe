@@ -1,21 +1,20 @@
-import { Modal, Button } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
+import MyForm from "../MyForm/MyForm";
 
-const MyModal = ({ show, close, name }) => {
+const MyModal = ({ show, close, type, clickLinkEvent }) => {
 	return (
 		<>
 			<Modal show={show}>
 				<Modal.Header>
-					<Modal.Title>{name}</Modal.Title>
+					<Modal.Title>{type === "login" ? "Login" : "Sign Up"}</Modal.Title>
 				</Modal.Header>
-				<Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-				<Modal.Footer>
-					<Button variant="secondary" onClick={close}>
-						Cancel
-					</Button>
-					<Button variant="primary" onClick={close}>
-						Login
-					</Button>
-				</Modal.Footer>
+				<Modal.Body>
+					<MyForm
+						type={type}
+						close={close}
+						clickLinkEvent={clickLinkEvent}
+					></MyForm>
+				</Modal.Body>
 			</Modal>
 		</>
 	);

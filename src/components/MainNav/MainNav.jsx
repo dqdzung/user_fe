@@ -1,20 +1,32 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Container, Navbar, Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "./MainNav.style.css";
 import MyModal from "../MyModal/MyModal";
+import { AuthContext } from "../../App";
 
 const MainNav = () => {
-	const [show, setShow] = useState(false);
+	const [showLogin, setShowLogin] = useState(false);
+	const [showSignUp, setShowSignUp] = useState(false);
+	const { user, setUser } = useContext(AuthContext);
 
-	const showLoginModal = () => {
-		console.log("clicked login");
-		setShow(true);
+	const showModal = (type) => {
+		if (type === "login") {
+			setShowLogin(true);
+			return;
+		}
+		setShowSignUp(true);
 	};
 
 	const closeModal = () => {
-		setShow(false);
+		setShowLogin(false);
+		setShowSignUp(false);
 	};
+
+  const handleLogout = () => {
+    localStorage.removeItem("token")
+    setUser(null);
+  }
 
 	return (
 		<>
@@ -29,13 +41,36 @@ const MainNav = () => {
 							<Link to="/news">News</Link>
 							<Link to="/about">About Us</Link>
 						</Nav>
-						<div className="login" onClick={showLoginModal}>
-							Login
-						</div>
+						{!user ? (
+							<div
+								className="nav-link"
+								onClick={() => {
+									showModal("login");
+								}}
+							>
+								Login
+							</div>
+						) : (
+							<div className="d-flex">
+								<div className="nav-link">{user}</div>
+								<div className="nav-link" onClick={handleLogout}>Log out</div>
+							</div>
+						)}
 					</Navbar.Collapse>
 				</Container>
 			</Navbar>
-			<MyModal name="Login" show={show} close={closeModal} />
+			<MyModal
+				type="login"
+				show={showLogin}
+				close={closeModal}
+				clickLinkEvent={showModal}
+			/>
+			<MyModal
+				type="signup"
+				show={showSignUp}
+				close={closeModal}
+				clickLinkEvent={showModal}
+			/>
 		</>
 	);
 };
