@@ -3,7 +3,7 @@ import { Form, Button } from "react-bootstrap";
 import { AuthContext } from "../../App"
 import "./UserForm.style.css";
 
-const MyForm = ({ type, close, clickLinkEvent }) => {
+const UserForm = ({ type, close, clickLinkEvent }) => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [passwordConfirm, setPasswordConfirm] = useState("");
@@ -98,4 +98,4 @@ const MyForm = ({ type, close, clickLinkEvent }) => {
 	);
 };
 
-export default MyForm;
+export default UserForm;

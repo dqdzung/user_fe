@@ -1,7 +1,7 @@
 import { Modal } from "react-bootstrap";
-import MyForm from "../UserForm/UserForm";
+import UserForm from "../UserForm/UserForm";
 
-const MyModal = ({ show, close, clickLinkEvent }) => {
+const SignUpModal = ({ show, close, clickLinkEvent }) => {
 	return (
 		<>
 			<Modal show={show}>
@@ -9,15 +9,15 @@ const MyModal = ({ show, close, clickLinkEvent }) => {
 					<Modal.Title>Sign Up</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<MyForm
+					<UserForm
 						type="signUp"
 						close={close}
 						clickLinkEvent={clickLinkEvent}
-					></MyForm>
+					></UserForm>
 				</Modal.Body>
 			</Modal>
 		</>
 	);
 };
 
-export default MyModal;
+export default SignUpModal;
