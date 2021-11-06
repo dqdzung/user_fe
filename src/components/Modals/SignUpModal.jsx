@@ -1,5 +1,5 @@
 import { Modal } from "react-bootstrap";
-import UserForm from "../UserForm/UserForm";
+import SignUpForm from "../UserForm/SignUpForm";
 
 const SignUpModal = ({ show, close, clickLinkEvent }) => {
 	return (
@@ -9,11 +9,10 @@ const SignUpModal = ({ show, close, clickLinkEvent }) => {
 					<Modal.Title>Sign Up</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<UserForm
-						type="signUp"
+					<SignUpForm
 						close={close}
 						clickLinkEvent={clickLinkEvent}
-					></UserForm>
+					></SignUpForm>
 				</Modal.Body>
 			</Modal>
 		</>

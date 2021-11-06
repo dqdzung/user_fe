@@ -17,9 +17,11 @@ function App() {
 		// to be changed later
 		const token = localStorage.getItem("token");
 		if (!token) {
-			return;
+      return;
 		}
-		setUser("user");
+    console.log(token)
+    const {user} = JSON.parse(localStorage.getItem("token"));
+		setUser(user);
 	};
 
 	useEffect(() => {

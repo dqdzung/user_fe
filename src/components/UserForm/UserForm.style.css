@@ -3,3 +3,7 @@
   color: blue;
   cursor: pointer;
 }
+
+.error {
+  color: red;
+}
