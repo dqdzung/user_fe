@@ -1,16 +1,50 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { useState, useEffect, createContext } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Container } from "react-bootstrap";
+import MainNav from "./components/MainNav/MainNav";
+import Home from "./routes/Home";
+import Products from "./routes/Products";
+import News from "./routes/News";
+import About from "./routes/About";
+
+export const AuthContext = createContext();
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <h1>HELLO WORLD</h1>
-        <h2>Test firebase hosting</h2>
-      </header>
-    </div>
-  );
+	const [user, setUser] = useState(null);
+
+	const fetchUser = () => {
+		// to be changed later
+		const token = localStorage.getItem("token");
+		if (!token) {
+      return;
+		}
+    console.log(token)
+    const {user} = JSON.parse(localStorage.getItem("token"));
+		setUser(user);
+	};
+
+	useEffect(() => {
+		fetchUser();
+	}, []);
+
+	return (
+		<div className="App">
+			<AuthContext.Provider value={{ user, setUser }}>
+				<BrowserRouter>
+					<MainNav />
+					<Container>
+						<Routes>
+							<Route path="/" element={<Home />}></Route>
+							<Route path="/products" element={<Products />}></Route>
+							<Route path="/news" element={<News />}></Route>
+							<Route path="/about" element={<About />}></Route>
+						</Routes>
+					</Container>
+				</BrowserRouter>
+			</AuthContext.Provider>
+		</div>
+	);
 }
 
 export default App;
