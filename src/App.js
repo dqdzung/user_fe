@@ -2,11 +2,14 @@ import "./App.css";
 import { useState, useEffect, createContext } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Container } from "react-bootstrap";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import MainNav from "./components/MainNav/MainNav";
 import Home from "./routes/Home";
 import Products from "./routes/Products";
 import News from "./routes/News";
 import About from "./routes/About";
+import Profile from "./routes/Profile";
+import NoMatch from "./routes/NoMatch";
 
 export const AuthContext = createContext();
 
@@ -17,10 +20,9 @@ function App() {
 		// to be changed later
 		const token = localStorage.getItem("token");
 		if (!token) {
-      return;
+			return;
 		}
-    console.log(token)
-    const {user} = JSON.parse(localStorage.getItem("token"));
+		const { user } = JSON.parse(localStorage.getItem("token"));
 		setUser(user);
 	};
 
@@ -39,6 +41,11 @@ function App() {
 							<Route path="/products" element={<Products />}></Route>
 							<Route path="/news" element={<News />}></Route>
 							<Route path="/about" element={<About />}></Route>
+							<ProtectedRoute
+								path="/profile"
+								element={<Profile />}
+							></ProtectedRoute>
+							<Route path="*" element={<NoMatch />}></Route>
 						</Routes>
 					</Container>
 				</BrowserRouter>
