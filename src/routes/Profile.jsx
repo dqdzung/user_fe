@@ -33,9 +33,12 @@ const Profile = () => {
 			phone: user ? user.phone : "",
 		},
 		onSubmit: (values) => {
-			// to be changed
+      // to be changed
+      setLoading(true);
 			const data = { password: newPassword, ...values };
 			console.log("edited", data);
+      setLoading(false);
+
 		},
 	});
 
