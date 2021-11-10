@@ -1,4 +1,3 @@
-import "./App.css";
 import { useState, useEffect, createContext } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Container } from "react-bootstrap";
@@ -10,20 +9,30 @@ import News from "./routes/News";
 import About from "./routes/About";
 import Profile from "./routes/Profile";
 import NoMatch from "./routes/NoMatch";
+import api from "./api";
 
 export const AuthContext = createContext();
 
 function App() {
 	const [user, setUser] = useState(null);
 
-	const fetchUser = () => {
-		// to be changed later
+	const fetchUser = async () => {
 		const token = localStorage.getItem("token");
 		if (!token) {
 			return;
 		}
-		const { user } = JSON.parse(localStorage.getItem("token"));
-		setUser(user);
+		try {
+			const res = await api({
+				url: "/api/user/me",
+				method: "GET",
+			});
+
+			if (res.data.success) {
+				setUser(res.data.data);
+			}
+		} catch (err) {
+			console.log(err);
+		}
 	};
 
 	useEffect(() => {

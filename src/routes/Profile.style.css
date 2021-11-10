@@ -1,0 +1,11 @@
+.imageWrapper {
+	height: 200px;
+	width: 200px;
+}
+
+.imageWrapper img {
+	width: 100%;
+  padding: 10px;
+	border: solid 1px;
+	border-radius: 50%;
+}
