@@ -27,8 +27,8 @@ function App() {
 				method: "GET",
 			});
 
-			if (res.data.success) {
-				setUser(res.data.data);
+			if (res.status === 200) {
+				setUser(res.data.user);
 			}
 		} catch (err) {
 			console.log(err);

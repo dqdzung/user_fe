@@ -1,16 +1,29 @@
 import { useContext, useState } from "react";
 import { Form, Row, Col, Button, Spinner } from "react-bootstrap";
+import {
+	ref,
+	uploadBytesResumable,
+	getDownloadURL,
+	getStorage,
+} from "firebase/storage";
+import firebase from "../firebase";
 import { useFormik } from "formik";
+import moment from "moment";
+import ImageUploading from "react-images-uploading";
 import { AuthContext } from "../App";
 import PasswordModal from "../components/Modals/PasswordModal";
-import placeholder from "../placeholder/holder.jpg";
+import api from "../api";
 import "./Profile.style.css";
 
 const Profile = () => {
-	const { user } = useContext(AuthContext);
+	const { user, setUser } = useContext(AuthContext);
 	const [loading, setLoading] = useState(false);
 	const [show, setShow] = useState(false);
 	const [newPassword, setPassword] = useState(null);
+	const [images, setImages] = useState([]);
+
+	const isHidden = images.length > 0;
+	const toggleHiddenClass = isHidden ? "hidden" : "";
 
 	const close = () => {
 		setShow(false);
@@ -25,26 +38,65 @@ const Profile = () => {
 		setPassword(null);
 	};
 
+	const formatDate = (date) => {
+		return moment(date).format("DD/MM/YYYY");
+	};
+
 	const formik = useFormik({
 		initialValues: {
 			firstName: user ? user.firstName : "",
 			lastName: user ? user.lastName : "",
-			dob: user ? user.dob : "",
+			dob: user ? formatDate(user.dob) : "",
 			phone: user ? user.phone : "",
 		},
-		onSubmit: (values) => {
-      // to be changed
-      setLoading(true);
-			const data = { password: newPassword, ...values };
-			console.log("edited", data);
-      setLoading(false);
+		enableReinitialize: true,
+		onSubmit: async (values) => {
+			setLoading(true);
+			const image = images[0];
 
+			const imgUrl = await uploadFile(image.file);
+
+			const data = { password: newPassword, profilePicture: imgUrl, ...values };
+			try {
+				const res = await api({
+					url: "api/user/update",
+					method: "PUT",
+					data: data,
+				});
+
+				if (res.data.success) {
+					setLoading(false);
+					setUser(res.data.data);
+					alert("User info updated!");
+				}
+			} catch (err) {
+				setLoading(false);
+				console.log(err);
+			}
 		},
 	});
 
-	const handleUpload = () => {
-		// to be changed
-		console.log("clicked upload");
+	const uploadFile = (file) => {
+		return new Promise((resolve, reject) => {
+			const storage = getStorage(firebase);
+			const storageRef = ref(storage, file.name);
+			const metadata = {
+				contentType: file.type,
+			};
+			const uploadTask = uploadBytesResumable(storageRef, file, metadata);
+			const onProgress = () => {};
+			const onError = (err) => reject(err);
+			const onSuccess = () => {
+				getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) =>
+					resolve(downloadURL)
+				);
+			};
+			uploadTask.on("state_changed", onProgress, onError, onSuccess);
+		});
+	};
+
+	const onImageChange = (imageList) => {
+		setImages(imageList);
 	};
 
 	return (
@@ -52,14 +104,57 @@ const Profile = () => {
 			<h1>Profile Page</h1>
 			<Form onSubmit={formik.handleSubmit}>
 				<div className="d-flex flex-column align-items-center justify-content-center">
-					<div className="imageWrapper">
-						<img alt="avatar" src={user ? user.profilePicture : placeholder} />
-					</div>
-					<Button className="my-3" onClick={handleUpload}>
-						Upload
-					</Button>
+					<ImageUploading
+						value={images}
+						maxNumber={1}
+						onChange={onImageChange}
+						dataURLKey="data_url"
+					>
+						{({ imageList, onImageUpload, onImageUpdate, onImageRemove }) => {
+							return (
+								<>
+									{!images.length > 0 && (
+										<div className="imageWrapper mt-4">
+											{user && user.profilePicture !== '' ? (
+												<img alt="avatar" src={user.profilePicture} />
+											) : (
+												<img
+													alt="avatar"
+													src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
+												/>
+											)}
+										</div>
+									)}
+									{imageList.map((image, index) => {
+										return (
+											<div key={index}>
+												<div
+													className="imageWrapper d-flex align-items-center justify-content-center"
+													onClick={onImageUpdate}
+												>
+													<img src={image.data_url} alt="" />
+												</div>
+											</div>
+										);
+									})}
+									<div className="my-3">
+										<Button
+											className={toggleHiddenClass}
+											onClick={onImageUpload}
+										>
+											Upload image
+										</Button>
+										{images.length > 0 && (
+											<Button variant="secondary" onClick={onImageRemove}>
+												Remove
+											</Button>
+										)}
+									</div>
+								</>
+							);
+						}}
+					</ImageUploading>
 				</div>
-
 				<Form.Group as={Row} className="mb-3">
 					<Form.Label column sm="2">
 						Email
@@ -141,7 +236,9 @@ const Profile = () => {
 					<Button
 						variant="primary"
 						type="submit"
-						disabled={loading || (!formik.dirty && !newPassword)}
+						disabled={
+							loading || (!formik.dirty && !newPassword && !images.length > 0)
+						}
 					>
 						{loading ? (
 							<Spinner
