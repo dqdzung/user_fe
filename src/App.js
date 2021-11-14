@@ -1,27 +1,38 @@
-import "./App.css";
 import { useState, useEffect, createContext } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Container } from "react-bootstrap";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import MainNav from "./components/MainNav/MainNav";
 import Home from "./routes/Home";
 import Products from "./routes/Products";
 import News from "./routes/News";
 import About from "./routes/About";
+import Profile from "./routes/Profile";
+import NoMatch from "./routes/NoMatch";
+import api from "./api";
 
 export const AuthContext = createContext();
 
 function App() {
 	const [user, setUser] = useState(null);
 
-	const fetchUser = () => {
-		// to be changed later
+	const fetchUser = async () => {
 		const token = localStorage.getItem("token");
 		if (!token) {
-      return;
+			return;
 		}
-    console.log(token)
-    const {user} = JSON.parse(localStorage.getItem("token"));
-		setUser(user);
+		try {
+			const res = await api({
+				url: "/api/user/me",
+				method: "GET",
+			});
+
+			if (res.status === 200) {
+				setUser(res.data.user);
+			}
+		} catch (err) {
+			console.log(err);
+		}
 	};
 
 	useEffect(() => {
@@ -39,6 +50,11 @@ function App() {
 							<Route path="/products" element={<Products />}></Route>
 							<Route path="/news" element={<News />}></Route>
 							<Route path="/about" element={<About />}></Route>
+							<ProtectedRoute
+								path="/profile"
+								element={<Profile />}
+							></ProtectedRoute>
+							<Route path="*" element={<NoMatch />}></Route>
 						</Routes>
 					</Container>
 				</BrowserRouter>

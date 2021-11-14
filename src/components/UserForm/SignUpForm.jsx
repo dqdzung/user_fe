@@ -1,5 +1,7 @@
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Spinner } from "react-bootstrap";
+import { useState } from "react";
 import { useFormik } from "formik";
+import api from "../../api";
 import "./UserForm.style.css";
 
 const validate = (values) => {
@@ -24,20 +26,51 @@ const validate = (values) => {
 		errors.passwordConfirm = "Password confirmation doesn't match!";
 	}
 
+	if (!values.firstName) {
+		errors.firstName = "Required!";
+	}
+
+	if (!values.lastName) {
+		errors.lastName = "Required!";
+	}
+
 	return errors;
 };
 
 const SignUpForm = ({ close, clickLinkEvent }) => {
+	const [loading, setLoading] = useState(false);
+
 	const formik = useFormik({
 		initialValues: {
 			email: "",
 			password: "",
 			passwordConfirm: "",
+			firstName: "",
+			lastName: "",
 		},
 		validate,
 		// to be changed later
-		onSubmit: (values) => {
-			alert(JSON.stringify(values, null, 2));
+		onSubmit: async (values) => {
+			setLoading(true);
+			const { email, password, firstName, lastName } = values;
+
+			try {
+				const res = await api({
+					url: "api/user/register",
+					method: "POST",
+					data: { email, password, firstName, lastName },
+				});
+
+				if (res.status === 200) {
+					setLoading(false);
+					alert("Registration success!");
+					close();
+				}
+			} catch (err) {
+				setLoading(false);
+				console.log(err);
+				close();
+			}
 		},
 	});
 
@@ -85,9 +118,41 @@ const SignUpForm = ({ close, clickLinkEvent }) => {
 				/>
 				<div className="error p-1">{formik.errors.passwordConfirm}</div>
 			</Form.Group>
-			<div className="form-btn py-2">
-				<Button variant="primary" type="submit">
-					Login
+			<Form.Group className="mb-3">
+				<Form.Label>First Name</Form.Label>
+				<Form.Control
+					id="firstName"
+					type="text"
+					placeholder="Enter your first name"
+					onChange={formik.handleChange}
+					value={formik.values.firstName}
+				/>
+				<div className="error p-1">{formik.errors.firstName}</div>
+			</Form.Group>
+			<Form.Group className="mb-3">
+				<Form.Label>Last Name</Form.Label>
+				<Form.Control
+					id="lastName"
+					type="text"
+					placeholder="Enter your last name"
+					onChange={formik.handleChange}
+					value={formik.values.lastName}
+				/>
+				<div className="error p-1">{formik.errors.lastName}</div>
+			</Form.Group>
+			<div className="py-2">
+				<Button variant="primary" type="submit" disabled={loading}>
+					{loading ? (
+						<Spinner
+							as="span"
+							animation="border"
+							size="sm"
+							role="status"
+							aria-hidden="true"
+						/>
+					) : (
+						"Sign Up"
+					)}
 				</Button>
 				<Button className="mx-2" variant="secondary" onClick={close}>
 					Cancel

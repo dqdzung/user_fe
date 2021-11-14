@@ -1,0 +1,14 @@
+.imageWrapper {
+	height: 200px;
+	width: 200px;
+}
+
+.imageWrapper img {
+	width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.hidden {
+	display: none;
+}

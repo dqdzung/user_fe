@@ -1,7 +1,8 @@
-import { useContext } from "react";
-import { Form, Button } from "react-bootstrap";
+import { useState, useContext } from "react";
+import { Form, Button, Spinner } from "react-bootstrap";
 import { useFormik } from "formik";
 import { AuthContext } from "../../App";
+import api from "../../api";
 import "./UserForm.style.css";
 
 const validate = (values) => {
@@ -22,6 +23,7 @@ const validate = (values) => {
 
 const LoginForm = ({ close, clickLinkEvent }) => {
 	const { setUser } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
 
 	const formik = useFormik({
 		initialValues: {
@@ -29,15 +31,29 @@ const LoginForm = ({ close, clickLinkEvent }) => {
 			password: "",
 		},
 		validate,
-		onSubmit: (values) => {
-			// to be changed later
-			console.log("login form submitted", values);
-			localStorage.setItem(
-				"token",
-				JSON.stringify({ user: values.email, token: "token123" })
-			);
-			setUser(values.email);
-			close();
+		onSubmit: async (values) => {
+      setLoading(true);
+			const { email, password } = values;
+
+			try {
+				const res = await api({
+					url: "api/user/login",
+					method: "POST",
+					data: { email, password },
+				});
+
+				if (res.status === 200) {
+          setLoading(false)
+					const { user, token } = res.data;
+					localStorage.setItem("token", token);
+					setUser(user);
+					close();
+				}
+			} catch (err) {
+        setLoading(false);
+				console.log(err);
+				alert("Wrong email or Password");
+			}
 		},
 	});
 
@@ -77,9 +93,19 @@ const LoginForm = ({ close, clickLinkEvent }) => {
 			<Form.Group className="mb-3" controlId="formBasicCheckbox">
 				<Form.Check type="checkbox" label="Remember me" />
 			</Form.Group>
-			<div className="form-btn py-2">
-				<Button variant="primary" type="submit">
-					Login
+			<div className="py-2">
+				<Button variant="primary" type="submit" disabled={loading}>
+					{loading ? (
+						<Spinner
+							as="span"
+							animation="border"
+							size="sm"
+							role="status"
+							aria-hidden="true"
+						/>
+					) : (
+						"Login"
+					)}
 				</Button>
 				<Button className="mx-2" variant="secondary" onClick={close}>
 					Cancel

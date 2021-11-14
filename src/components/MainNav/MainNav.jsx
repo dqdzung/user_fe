@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import { Container, Navbar, Nav } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./MainNav.style.css";
 import LoginModal from "../Modals/LoginModal";
 import SignUpModal from "../Modals/SignUpModal";
@@ -10,6 +10,7 @@ const MainNav = () => {
 	const [showLogin, setShowLogin] = useState(false);
 	const [showSignUp, setShowSignUp] = useState(false);
 	const { user, setUser } = useContext(AuthContext);
+	const navigate = useNavigate();
 
 	const showModal = (type) => {
 		if (type === "login") {
@@ -27,6 +28,7 @@ const MainNav = () => {
 	const handleLogout = () => {
 		localStorage.removeItem("token");
 		setUser(null);
+		navigate("/");
 	};
 
 	return (
@@ -53,7 +55,9 @@ const MainNav = () => {
 							</div>
 						) : (
 							<div className="d-flex">
-								<div className="nav-link">{user}</div>
+								<Nav>
+									<Link to="/profile">{user.firstName}</Link>
+								</Nav>
 								<div className="nav-link" onClick={handleLogout}>
 									Log out
 								</div>
