@@ -1,7 +1,7 @@
 import { Row, Col } from "react-bootstrap";
 import { Outlet } from "react-router-dom";
 
-import SideNav from "./SideNav";
+import SideNav from "../components/SideNav/SideNav.jsx";
 
 const UserPage = () => {
 	return (

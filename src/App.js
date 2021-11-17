@@ -8,8 +8,8 @@ import Products from "./routes/Products";
 import News from "./routes/News";
 import About from "./routes/About";
 import UserPage from "./routes/UserPage";
-import Profile from "./routes/Profile.jsx";
-import PastPurchase from "./routes/PastPurchase";
+import Profile from "./components/Profile/Profile.jsx";
+import PastPurchase from "./components/PastPurchase.jsx";
 import NoMatch from "./routes/NoMatch";
 import api from "./api";
 

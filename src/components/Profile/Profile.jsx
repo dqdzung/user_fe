@@ -3,9 +3,9 @@ import { Form, Row, Col, Button, Spinner } from "react-bootstrap";
 import { useFormik } from "formik";
 import moment from "moment";
 
-import { AuthContext } from "../App";
-import PasswordModal from "../components/Modals/PasswordModal";
-import api from "../api";
+import { AuthContext } from "../../App";
+import PasswordModal from "../Modals/PasswordModal";
+import api from "../../api";
 import "./Profile.style.css";
 
 const Profile = () => {
