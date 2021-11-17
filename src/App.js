@@ -11,6 +11,7 @@ import UserPage from "./routes/UserPage";
 import Profile from "./components/Profile/Profile.jsx";
 import PastPurchase from "./components/PastPurchase.jsx";
 import NoMatch from "./routes/NoMatch";
+import Footer from "./components/Footer/Footer.jsx"
 import api from "./api";
 
 export const AuthContext = createContext();
@@ -60,6 +61,7 @@ function App() {
 							<Route path="*" element={<NoMatch />}></Route>
 						</Routes>
 					</Container>
+          <Footer/>
 				</BrowserRouter>
 			</AuthContext.Provider>
 		</div>

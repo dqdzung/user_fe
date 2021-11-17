@@ -1,0 +1,10 @@
+@media (min-width: 768px) {
+	.newsletter-input {
+		width: 45%;
+	}
+}
+@media (max-width: 768px) {
+	.info {
+		text-align: center;
+	}
+}
