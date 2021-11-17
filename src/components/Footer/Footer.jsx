@@ -1,5 +1,6 @@
 import { Container, Row, Col } from "react-bootstrap";
-import "./Footer.style.css"
+import { Link } from "react-router-dom";
+import "./Footer.style.css";
 
 const Footer = () => {
 	return (
@@ -28,14 +29,14 @@ const Footer = () => {
 							<div>(+84) 1234 567 890</div>
 							<div>info@voucher.com</div>
 						</Col>
-						<Col
-							className="mb-3"
-							xs={12}
-							md={4}
-						>
+						<Col className="mb-3" xs={12} md={4}>
 							<h3>About Us</h3>
-							<div>Our Story</div>
-							<div>Contact Us</div>
+							<Link to="/about" className="text-reset text-decoration-none">
+								<div>Our Story</div>
+							</Link>
+							<Link to="/contact" className="text-reset text-decoration-none">
+								<div>Contact Us</div>
+							</Link>
 							<div>Policy</div>
 							<div>FAQ</div>
 						</Col>

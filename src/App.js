@@ -1,6 +1,7 @@
 import { useState, useEffect, createContext } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Container } from "react-bootstrap";
+import { Helmet } from "react-helmet";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import MainNav from "./components/MainNav/MainNav";
 import Home from "./routes/Home";
@@ -12,6 +13,7 @@ import Profile from "./components/Profile/Profile.jsx";
 import PastPurchase from "./components/PastPurchase.jsx";
 import NoMatch from "./routes/NoMatch";
 import Footer from "./components/Footer/Footer.jsx"
+import Contact from "./routes/Contact";
 import api from "./api";
 
 export const AuthContext = createContext();
@@ -44,6 +46,9 @@ function App() {
 
 	return (
 		<div className="App">
+			<Helmet>
+				<title>{document.title}</title>
+			</Helmet>
 			<AuthContext.Provider value={{ user, setUser }}>
 				<BrowserRouter>
 					<MainNav />
@@ -58,10 +63,11 @@ function App() {
 								<Route path="me" element={<Profile />} />
 								<Route path="purchase" element={<PastPurchase />} />
 							</ProtectedRoute>
+							<Route path="/contact" element={<Contact />}></Route>
 							<Route path="*" element={<NoMatch />}></Route>
 						</Routes>
 					</Container>
-          <Footer/>
+					<Footer />
 				</BrowserRouter>
 			</AuthContext.Provider>
 		</div>

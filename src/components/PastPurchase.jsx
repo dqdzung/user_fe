@@ -1,7 +1,14 @@
-const PastPurchase = () => {
-  return (
-    <h1>Past Purchases</h1>
-  )
-}
+import { Helmet } from "react-helmet";
 
-export default PastPurchase
+const PastPurchase = () => {
+	return (
+		<div className="mt-4">
+			<Helmet>
+				<title>Voucher Shop - Purchases</title>
+			</Helmet>
+			<h1>Past Purchases</h1>
+		</div>
+	);
+};
+
+export default PastPurchase;

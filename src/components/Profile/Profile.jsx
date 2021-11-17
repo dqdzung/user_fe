@@ -2,6 +2,7 @@ import { useContext, useState, useRef } from "react";
 import { Form, Row, Col, Button, Spinner } from "react-bootstrap";
 import { useFormik } from "formik";
 import moment from "moment";
+import { Helmet } from "react-helmet";
 
 import { AuthContext } from "../../App";
 import PasswordModal from "../Modals/PasswordModal";
@@ -89,6 +90,9 @@ const Profile = () => {
 
 	return (
 		<>
+			<Helmet>
+				<title>Voucher Shop - Profile</title>
+			</Helmet>
 			<Form
 				className="shadow py-2 px-5 my-2 bg-white rounded"
 				onSubmit={formik.handleSubmit}
