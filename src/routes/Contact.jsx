@@ -3,7 +3,7 @@ import Map from "../components/Map";
 
 const Contact = () => {
 	const mapUrl = `https://maps.googleapis.com/maps/api/js?key=
-AIzaSyCapp_yCkXY98-0FdL5raEYp2tdRmYYnvo&callback=initMap`;
+${process.env.REACT_APP_GOOGLE_API_KEY}&callback=initMap`;
 
 	return (
 		<div className="mt-5 text-center">
