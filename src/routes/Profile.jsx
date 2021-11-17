@@ -89,146 +89,138 @@ const Profile = () => {
 
 	return (
 		<>
-			<div className="d-flex">
-				<div className="sidebar" style={{ width: "15%" }}>
-					<h3 className="w3-bar-item">Menu</h3>
-					<div className="links d-flex flex-column">
-						<span>Profile</span>
-						<span>Purchases</span>
+			<Form
+				className="shadow py-2 px-5 my-2 bg-white rounded"
+				onSubmit={formik.handleSubmit}
+			>
+				<div className="d-flex mt-3 flex-column align-items-center justify-content-center">
+					<div className="d-flex align-items-center imageWrapper">
+						{imgUrl ? (
+							<img alt="avatar" src={imgUrl} />
+						) : (
+							<img
+								alt="avatar"
+								src={
+									user && user.profilePicture !== ""
+										? user.profilePicture
+										: "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
+								}
+							/>
+						)}
 					</div>
+					<Form.Group className="my-3 d-flex align-items-center">
+						<Form.Control
+							type="file"
+							size="sm"
+							ref={imageInputRef}
+							onChange={handleFileInput}
+						/>
+						{imageUploading && (
+							<Spinner animation="border" size="sm" className="mx-2" />
+						)}
+					</Form.Group>
 				</div>
-				<div className="profile" style={{ width: "85%" }}>
-					<Form onSubmit={formik.handleSubmit}>
-						<div className="d-flex flex-column align-items-center justify-content-center">
-							<div className="d-flex align-items-center mt-4 imageWrapper">
-								{imgUrl ? (
-									<img alt="avatar" src={imgUrl} />
-								) : (
-									<img
-										alt="avatar"
-										src={
-											user && user.profilePicture !== ""
-												? user.profilePicture
-												: "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
-										}
-									/>
-								)}
-							</div>
-							<Form.Group className="my-3 d-flex align-items-center">
-								<Form.Control
-									type="file"
-									size="sm"
-									ref={imageInputRef}
-									onChange={handleFileInput}
-								/>
-								{imageUploading && (
-									<Spinner animation="border" size="sm" className="mx-2" />
-								)}
-							</Form.Group>
-						</div>
-						<Form.Group as={Row} className="mb-3">
-							<Form.Label column sm="2">
-								Email
-							</Form.Label>
-							<Col sm="10" className="d-flex align-items-center">
-								{user ? user.email : "example@example.com"}
-							</Col>
-						</Form.Group>
-						<Form.Group as={Row} className="mb-3">
-							<Form.Label column sm="2">
-								Password
-							</Form.Label>
-							<Col sm="10" className="d-flex align-items-center">
-								<Button onClick={open} disabled={newPassword}>
-									Change
-								</Button>
-								{newPassword && (
-									<div className="mx-2">Password changed, remember to Save</div>
-								)}
-							</Col>
-						</Form.Group>
-						<Form.Group as={Row} className="mb-3">
-							<Form.Label column sm="2">
-								First name
-							</Form.Label>
-							<Col sm="10">
-								<Form.Control
-									id="firstName"
-									type="text"
-									placeholder="John/Jane"
-									onChange={formik.handleChange}
-									value={formik.values.firstName}
-								/>
-							</Col>
-						</Form.Group>
-						<Form.Group as={Row} className="mb-3">
-							<Form.Label column sm="2">
-								Last name
-							</Form.Label>
-							<Col sm="10">
-								<Form.Control
-									id="lastName"
-									type="text"
-									placeholder="Doe"
-									onChange={formik.handleChange}
-									value={formik.values.lastName}
-								/>
-							</Col>
-						</Form.Group>
-						<Form.Group as={Row} className="mb-3">
-							<Form.Label column sm="2">
-								Date of Birth
-							</Form.Label>
-							<Col sm="10">
-								<Form.Control
-									id="dob"
-									type="text"
-									placeholder="01-01-1991"
-									onChange={formik.handleChange}
-									value={formik.values.dob}
-								/>
-							</Col>
-						</Form.Group>
-						<Form.Group as={Row} className="mb-3">
-							<Form.Label column sm="2">
-								Phone
-							</Form.Label>
-							<Col sm="10">
-								<Form.Control
-									id="phone"
-									type="text"
-									placeholder="0123456789"
-									onChange={formik.handleChange}
-									value={formik.values.phone}
-								/>
-							</Col>
-						</Form.Group>
-						<div className="d-flex justify-content-center py-4">
-							<Button
-								variant="primary"
-								type="submit"
-								disabled={loading || (!formik.dirty && !newPassword && !imgUrl)}
-							>
-								{loading ? (
-									<Spinner
-										as="span"
-										animation="border"
-										size="sm"
-										role="status"
-										aria-hidden="true"
-									/>
-								) : (
-									"Save"
-								)}
-							</Button>
-							<Button className="mx-2" variant="secondary" onClick={clearForm}>
-								Clear
-							</Button>
-						</div>
-					</Form>
+				<Form.Group as={Row} className="mb-3">
+					<Form.Label column sm="2">
+						Email
+					</Form.Label>
+					<Col sm="10" className="d-flex align-items-center">
+						{user ? user.email : "example@example.com"}
+					</Col>
+				</Form.Group>
+				<Form.Group as={Row} className="mb-3">
+					<Form.Label column sm="2">
+						Password
+					</Form.Label>
+					<Col sm="10" className="d-flex align-items-center">
+						<Button onClick={open} disabled={newPassword}>
+							Change
+						</Button>
+						{newPassword && (
+							<div className="mx-2">Password changed, remember to Save</div>
+						)}
+					</Col>
+				</Form.Group>
+				<Form.Group as={Row} className="mb-3">
+					<Form.Label column sm="2">
+						First name
+					</Form.Label>
+					<Col sm="10">
+						<Form.Control
+							id="firstName"
+							type="text"
+							placeholder="John/Jane"
+							onChange={formik.handleChange}
+							value={formik.values.firstName}
+						/>
+					</Col>
+				</Form.Group>
+				<Form.Group as={Row} className="mb-3">
+					<Form.Label column sm="2">
+						Last name
+					</Form.Label>
+					<Col sm="10">
+						<Form.Control
+							id="lastName"
+							type="text"
+							placeholder="Doe"
+							onChange={formik.handleChange}
+							value={formik.values.lastName}
+						/>
+					</Col>
+				</Form.Group>
+				<Form.Group as={Row} className="mb-3">
+					<Form.Label column sm="2">
+						Date of Birth
+					</Form.Label>
+					<Col sm="10">
+						<Form.Control
+							id="dob"
+							type="text"
+							placeholder="01-01-1991"
+							onChange={formik.handleChange}
+							value={formik.values.dob}
+						/>
+					</Col>
+				</Form.Group>
+				<Form.Group as={Row} className="mb-3">
+					<Form.Label column sm="2">
+						Phone
+					</Form.Label>
+					<Col sm="10">
+						<Form.Control
+							id="phone"
+							type="text"
+							placeholder="0123456789"
+							onChange={formik.handleChange}
+							value={formik.values.phone}
+						/>
+					</Col>
+				</Form.Group>
+				<div className="d-flex justify-content-center py-4">
+					<Button
+						variant="primary"
+						type="submit"
+						disabled={loading || (!formik.dirty && !newPassword && !imgUrl)}
+					>
+						{loading ? (
+							<Spinner
+								as="span"
+								animation="border"
+								size="sm"
+								role="status"
+								aria-hidden="true"
+							/>
+						) : (
+							"Save"
+						)}
+					</Button>
+					<Button className="mx-2" variant="secondary" onClick={clearForm}>
+						Clear
+					</Button>
 				</div>
-				<PasswordModal show={show} close={close} setPassword={setPassword} />
-			</div>
+			</Form>
+			<PasswordModal show={show} close={close} setPassword={setPassword} />
 		</>
 	);
 };
