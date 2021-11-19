@@ -56,7 +56,7 @@ const MainNav = () => {
 						) : (
 							<div className="d-flex">
 								<Nav>
-									<Link to="/profile">{user.firstName}</Link>
+									<Link to="/user/profile">{user.firstName}</Link>
 								</Nav>
 								<div className="nav-link" onClick={handleLogout}>
 									Log out

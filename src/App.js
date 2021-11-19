@@ -1,14 +1,19 @@
 import { useState, useEffect, createContext } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Container } from "react-bootstrap";
+import { Helmet } from "react-helmet";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import MainNav from "./components/MainNav/MainNav";
 import Home from "./routes/Home";
 import Products from "./routes/Products";
 import News from "./routes/News";
 import About from "./routes/About";
-import Profile from "./routes/Profile";
+import UserPage from "./routes/UserPage";
+import Profile from "./components/Profile/Profile.jsx";
+import PastPurchase from "./components/PastPurchase.jsx";
 import NoMatch from "./routes/NoMatch";
+import Footer from "./components/Footer/Footer.jsx"
+import Contact from "./routes/Contact";
 import api from "./api";
 
 export const AuthContext = createContext();
@@ -41,6 +46,9 @@ function App() {
 
 	return (
 		<div className="App">
+			<Helmet>
+				<title>{document.title}</title>
+			</Helmet>
 			<AuthContext.Provider value={{ user, setUser }}>
 				<BrowserRouter>
 					<MainNav />
@@ -50,13 +58,16 @@ function App() {
 							<Route path="/products" element={<Products />}></Route>
 							<Route path="/news" element={<News />}></Route>
 							<Route path="/about" element={<About />}></Route>
-							<ProtectedRoute
-								path="/profile"
-								element={<Profile />}
-							></ProtectedRoute>
+							<ProtectedRoute path="/user" element={<UserPage />}>
+								<Route path="/user" element={<Navigate to="me" />} />
+								<Route path="me" element={<Profile />} />
+								<Route path="purchase" element={<PastPurchase />} />
+							</ProtectedRoute>
+							<Route path="/contact" element={<Contact />}></Route>
 							<Route path="*" element={<NoMatch />}></Route>
 						</Routes>
 					</Container>
+					<Footer />
 				</BrowserRouter>
 			</AuthContext.Provider>
 		</div>
