@@ -1,6 +1,5 @@
 import { useState, useEffect, createContext } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { Container } from "react-bootstrap";
 import { Helmet } from "react-helmet";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import MainNav from "./components/MainNav/MainNav";
@@ -52,7 +51,6 @@ function App() {
 			<AuthContext.Provider value={{ user, setUser }}>
 				<BrowserRouter>
 					<MainNav />
-					<Container>
 						<Routes>
 							<Route path="/" element={<Home />}></Route>
 							<Route path="/products" element={<Products />}></Route>
@@ -66,7 +64,6 @@ function App() {
 							<Route path="/contact" element={<Contact />}></Route>
 							<Route path="*" element={<NoMatch />}></Route>
 						</Routes>
-					</Container>
 					<Footer />
 				</BrowserRouter>
 			</AuthContext.Provider>
