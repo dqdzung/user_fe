@@ -1,16 +1,17 @@
 import { Card, Col, Button } from "react-bootstrap";
-import "./ProductCard.style.css"
+import "./ProductCard.style.css";
+import placeholderImg from "./placeholder-image.png";
 
 const ProductCard = ({ data }) => {
 	const { avatar, name, description, listedPrice, discountPrice } = data;
 	return (
 		<Col xs={12} lg={6} className="p-4">
 			<Card>
-				<Card.Img variant="top" src={avatar} />
+				<Card.Img variant="top" src={avatar || placeholderImg} />
 				<Card.Body>
 					<Card.Title>{name}</Card.Title>
 					<hr />
-					<Card.Text>{description}</Card.Text>
+					<Card.Text>{description || "No description"}</Card.Text>
 					<div className="d-flex align-items-center justify-content-between">
 						<div className="d-flex">
 							<div className="px-1">
