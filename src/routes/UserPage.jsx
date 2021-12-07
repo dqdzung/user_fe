@@ -1,18 +1,20 @@
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Container } from "react-bootstrap";
 import { Outlet } from "react-router-dom";
 
 import SideNav from "../components/SideNav/SideNav.jsx";
 
 const UserPage = () => {
 	return (
-		<Row>
-			<Col xs={12} md={2}>
-				<SideNav />
-			</Col>
-			<Col xs={12} md={10}>
-				<Outlet />
-			</Col>
-		</Row>
+		<Container>
+			<Row>
+				<Col xs={12} md={2}>
+					<SideNav />
+				</Col>
+				<Col xs={12} md={10}>
+					<Outlet />
+				</Col>
+			</Row>
+		</Container>
 	);
 };
 
