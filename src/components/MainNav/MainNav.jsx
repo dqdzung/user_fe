@@ -33,7 +33,7 @@ const MainNav = () => {
 
 	return (
 		<>
-			<Navbar collapseOnSelect expand="md" bg="dark" variant="dark">
+			<Navbar className="mb-4" collapseOnSelect expand="md" bg="dark" variant="dark">
 				<Container>
 					<Navbar.Brand>Voucher Shop</Navbar.Brand>
 					<Navbar.Toggle aria-controls="responsive-navbar-nav" />
