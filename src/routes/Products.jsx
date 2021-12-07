@@ -42,6 +42,7 @@ const Products = () => {
 
 	useEffect(() => {
 		fetchProducts();
+		// eslint-disable-next-line
 	}, []);
 
 	const getPageItems = (array, pageNumber) => {
