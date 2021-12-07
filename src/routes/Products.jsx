@@ -103,7 +103,7 @@ const Products = () => {
 			<Helmet>
 				<title>Voucher Shop - Products</title>
 			</Helmet>
-			<Container className="product-content d-flex">
+			<Container className="product-content d-flex mt-4">
 				<div className="product-side-nav">
 					<div className="tag-section">
 						<div className="tag-section-header mb-2 text-center">Tags</div>
