@@ -14,12 +14,14 @@ const ProductCard = ({ data }) => {
 					<Card.Text>{description || "No description"}</Card.Text>
 					<div className="d-flex align-items-center justify-content-between">
 						<div className="d-flex">
-							<div className="px-1">
+							<div className="price px-1">
 								<s>{`US$${listedPrice}`}</s>
 							</div>
-							<div className="px-1">{`US$${discountPrice}`}</div>
+							<div className="price px-1">{`US$${discountPrice}`}</div>
 						</div>
-						<Button variant="warning">Add to Cart</Button>
+						<Button variant="warning">
+							Add to Cart
+						</Button>
 					</div>
 				</Card.Body>
 			</Card>

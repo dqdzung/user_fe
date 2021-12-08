@@ -7,7 +7,7 @@
 	width: 80%;
 }
 
-.tag-section {
+.tag-section, .slider-section {
 	border: 1px solid rgba(0, 0, 0, 0.125);
 	border-radius: 5px;
 	padding: 10px;

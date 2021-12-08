@@ -1,12 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-	Carousel,
-	Container,
-	Card,
-	Row,
-	Col,
-	Spinner,
-} from "react-bootstrap";
+import { Carousel, Container, Card, Row, Col, Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import ProductCard from "../components/ProductCard/ProductCard";
 import "./Home.style.css";
@@ -84,7 +77,7 @@ const Home = () => {
 			</section>
 
 			{/* Hot Product section */}
-			<section className="mt-4">
+			<section className="hot-section mt-4">
 				<Container>
 					<div className="text-center">
 						<h2>Hot Products</h2>

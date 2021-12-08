@@ -9,15 +9,3 @@
 	background-color: #f8f8f8;
 }
 
-.card-img-top {
-	max-height: 200px;
-	object-fit: cover;
-}
-
-.card {
-	transition: all 0.2s ease-in-out;
-}
-
-.card:hover {
-	transform: scale(1.02);
-}

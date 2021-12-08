@@ -10,3 +10,9 @@
 .card:hover {
 	transform: scale(1.02);
 }
+
+.price {
+  color: rgb(0, 155, 0);
+  font-size: 1.2rem;
+  font-weight: bold;
+}
