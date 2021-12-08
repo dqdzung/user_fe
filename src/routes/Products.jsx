@@ -21,10 +21,10 @@ const tags = ["tag 1", "tag 2", "tag 3"];
 
 const Products = () => {
 	const [isLoading, setIsLoading] = useState(true);
-	const [range, setRange] = useState({
-		min: 0,
-		max: 1,
-	});
+	// const [range, setRange] = useState({
+	// 	min: 0,
+	// 	max: 1,
+	// });
 	const [products, setProducts] = useState([]);
 	const [searchTerm, setTerm] = useState("");
 	const [searchResults, setResults] = useState([]);
@@ -43,8 +43,8 @@ const Products = () => {
 				setTotalPage((res.data.products.length + pageSize - 1) / pageSize);
 				setIsLoading(false);
 
-				const [min, max] = getMinMaxPrice(res.data.products);
-				setRange({ min, max });
+				// const [min, max] = getMinMaxPrice(res.data.products);
+				// setRange({ min, max });
 			}
 		} catch (err) {
 			console.log(err);
@@ -56,19 +56,19 @@ const Products = () => {
 		// eslint-disable-next-line
 	}, []);
 
-	const getMinMaxPrice = (products) => {
-		const max = Math.max.apply(
-			Math,
-			products.map((product) => product.discountPrice)
-		);
+	// const getMinMaxPrice = (products) => {
+	// 	const max = Math.max.apply(
+	// 		Math,
+	// 		products.map((product) => product.discountPrice)
+	// 	);
 
-		const min = Math.min.apply(
-			Math,
-			products.map((product) => product.discountPrice)
-		);
+	// 	const min = Math.min.apply(
+	// 		Math,
+	// 		products.map((product) => product.discountPrice)
+	// 	);
 
-		return [min, max];
-	};
+	// 	return [min, max];
+	// };
 
 	const getPageItems = (array, pageNumber) => {
 		const offset = (pageNumber - 1) * pageSize;
