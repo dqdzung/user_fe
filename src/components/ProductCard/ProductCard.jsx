@@ -1,13 +1,19 @@
 import { Card, Col, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import "./ProductCard.style.css";
 import placeholderImg from "./placeholder-image.png";
 
 const ProductCard = ({ data }) => {
-	const { avatar, name, description, listedPrice, discountPrice } = data;
+	const { avatar, name, description, listedPrice, discountPrice, _id } = data;
 	return (
 		<Col xs={12} lg={6} className="p-4">
 			<Card>
-				<Card.Img variant="top" src={avatar || placeholderImg} />
+				<Link
+					to={`/products/${_id}`}
+					className="text-reset text-decoration-none"
+				>
+					<Card.Img variant="top" src={avatar || placeholderImg} />
+				</Link>
 				<Card.Body>
 					<Card.Title>{name}</Card.Title>
 					<hr />
@@ -19,9 +25,7 @@ const ProductCard = ({ data }) => {
 							</div>
 							<div className="price px-1">{`US$${discountPrice}`}</div>
 						</div>
-						<Button variant="warning">
-							Add to Cart
-						</Button>
+						<Button variant="warning">Add to Cart</Button>
 					</div>
 				</Card.Body>
 			</Card>
