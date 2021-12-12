@@ -1,0 +1,25 @@
+.product-detail .placeholder-img {
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+  max-height: 300px;
+}
+
+.quantity-form input {
+	width: 50px;
+	text-align: center;
+  margin: 0 1px;
+}
+
+.quantity-form input[type="button"] {
+	width: 30px;
+	border: none;
+  border-radius: 5px;
+	transition: all 0.5s;
+}
+
+.detail-price {
+  font-size: 25px;
+  font-weight: bold;
+  color: rgb(0, 155, 0)
+}

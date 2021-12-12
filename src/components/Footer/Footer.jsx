@@ -5,7 +5,7 @@ import "./Footer.style.css";
 const Footer = () => {
 	return (
 		<>
-			<section className="bg-primary text-light p-5 mb-4">
+			<section className="bg-primary text-light p-5 my-4">
 				<Container className="d-md-flex align-items-center justify-content-between">
 					<h4 className="mb-3 mb-md-0">Sign Up For Our Newsletter</h4>
 					<div className="input-group newsletter-input">

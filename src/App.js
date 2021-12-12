@@ -11,8 +11,9 @@ import UserPage from "./routes/UserPage";
 import Profile from "./components/Profile/Profile.jsx";
 import PastPurchase from "./components/PastPurchase.jsx";
 import NoMatch from "./routes/NoMatch";
-import Footer from "./components/Footer/Footer.jsx"
+import Footer from "./components/Footer/Footer.jsx";
 import Contact from "./routes/Contact";
+import ProductDetail from "./routes/ProductDetail";
 import api from "./api";
 
 export const AuthContext = createContext();
@@ -51,19 +52,20 @@ function App() {
 			<AuthContext.Provider value={{ user, setUser }}>
 				<BrowserRouter>
 					<MainNav />
-						<Routes>
-							<Route path="/" element={<Home />}></Route>
-							<Route path="/products" element={<Products />}></Route>
-							<Route path="/news" element={<News />}></Route>
-							<Route path="/about" element={<About />}></Route>
-							<ProtectedRoute path="/user" element={<UserPage />}>
-								<Route path="/user" element={<Navigate to="me" />} />
-								<Route path="me" element={<Profile />} />
-								<Route path="purchase" element={<PastPurchase />} />
-							</ProtectedRoute>
-							<Route path="/contact" element={<Contact />}></Route>
-							<Route path="*" element={<NoMatch />}></Route>
-						</Routes>
+					<Routes>
+						<Route path="/" element={<Home />}></Route>
+						<Route path="/products" element={<Products />}></Route>
+						<Route path="/news" element={<News />}></Route>
+						<Route path="/about" element={<About />}></Route>
+						<ProtectedRoute path="/user" element={<UserPage />}>
+							<Route path="/user" element={<Navigate to="me" />} />
+							<Route path="me" element={<Profile />} />
+							<Route path="purchase" element={<PastPurchase />} />
+						</ProtectedRoute>
+						<Route path="/contact" element={<Contact />}></Route>
+						<Route path="/products/:id" element={<ProductDetail />}></Route>
+						<Route path="*" element={<NoMatch />}></Route>
+					</Routes>
 					<Footer />
 				</BrowserRouter>
 			</AuthContext.Provider>

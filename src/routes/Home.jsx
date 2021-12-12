@@ -1,11 +1,9 @@
-import { Carousel, Container, Card, Button, Row, Col } from "react-bootstrap";
+import { useState, useEffect } from "react";
+import { Carousel, Container, Card, Row, Col, Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import ProductCard from "../components/ProductCard/ProductCard";
 import "./Home.style.css";
-
-const imgs = [
-	"https://assets.digilink.vn/uploads/2021/11/San-pham-Digilink-1920x690-02-scaled.jpg",
-	"https://assets.digilink.vn/uploads/2021/11/busTrip.jpg",
-];
+import api from "../api";
 
 const news = [
 	{
@@ -25,71 +23,75 @@ const news = [
 	},
 ];
 
-const ProductCard = () => {
-	return (
-		<Col xs={12} lg={6} className="p-4">
-			<Card>
-				<Card.Img
-					variant="top"
-					src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif"
-				/>
-				<Card.Body>
-					<Card.Title>Card Title</Card.Title>
-					<hr />
-					<Card.Text>
-						Some quick example text to build on the card title and make up the
-						bulk of the card's content.
-					</Card.Text>
-					<div className="d-flex align-items-center justify-content-between">
-						<span>Price</span>
-						<Button variant="warning">Add to Cart</Button>
-					</div>
-				</Card.Body>
-			</Card>
-		</Col>
-	);
-};
-
 const Home = () => {
+	const [homeProducts, setHomeProducts] = useState({
+		inSlider: [],
+		isHot: [],
+	});
+	const [isLoading, setLoading] = useState(true);
+
+	const fetchHomeProducts = async () => {
+		try {
+			const responses = await Promise.all([
+				api.get("/api/product/inSlider"),
+				api.get("/api/product/isHot"),
+			]);
+
+			if (responses.length) {
+				setHomeProducts({
+					inSlider: responses[0].data.products,
+					isHot: responses[1].data.products,
+				});
+				setLoading(false);
+			}
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	useEffect(() => {
+		fetchHomeProducts();
+	}, []);
+
 	return (
 		<>
 			{/* Carousel section */}
 			<section>
-				<Carousel fade variant="dark">
-					{/* <Carousel.Item interval={3000}>
-							<img
-								className="d-block my-0 mx-auto"
-								src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif"
-								alt="placeholder"
-							/>
-						</Carousel.Item> */}
-					{imgs.map((img) => {
-						return (
-							<Carousel.Item key={imgs.indexOf(img)} interval={3000}>
+				<Carousel fade>
+					{isLoading ? (
+						<Carousel.Item>
+							<Spinner animation="border" role="status" />
+						</Carousel.Item>
+					) : (
+						homeProducts.inSlider.map((item) => (
+							<Carousel.Item key={item._id} interval={3000}>
 								<img
 									className="d-block w-100 h-auto my-0 mx-auto"
-									src={img}
-									alt={`${"item-" + imgs.indexOf(img)}`}
+									src={item.avatar}
+									alt={item.name}
 								/>
 							</Carousel.Item>
-						);
-					})}
+						))
+					)}
 				</Carousel>
 			</section>
 
 			{/* Hot Product section */}
-			<section className="mt-4">
+			<section className="hot-section mt-4">
 				<Container>
 					<div className="text-center">
 						<h2>Hot Products</h2>
 					</div>
 					<Row>
-						<ProductCard />
-						<ProductCard />
-						<ProductCard />
-						<ProductCard />
-						<ProductCard />
-						<ProductCard />
+						{isLoading ? (
+							<div className="text-center py-5">
+								<Spinner animation="border" role="status" />
+							</div>
+						) : (
+							homeProducts.isHot.map((item) => (
+								<ProductCard key={item._id} data={item} />
+							))
+						)}
 					</Row>
 				</Container>
 			</section>
