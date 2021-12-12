@@ -34,18 +34,15 @@ const ProductDetail = () => {
 
 			if (res.status === 200) {
 				setData(res.data.product);
-				// console.log(res.data.product.avatar);
 
-				const imageData = res.data.product.photos.map((photo) => {
+				const imageData = [
+					res.data.product.avatar,
+					...res.data.product.photos,
+				].map((photo) => {
 					return {
 						original: photo,
 						thumbnail: photo,
 					};
-				});
-
-				imageData.unshift({
-					original: res.data.product.avatar,
-					thumbnail: res.data.product.avatar,
 				});
 
 				setImages(imageData);
@@ -82,7 +79,11 @@ const ProductDetail = () => {
 				<Row>
 					<Col lg={6} xs={12}>
 						{isLoading ? (
-							<img className="placeholder-img" src={placeholderImg} alt="placeholder"></img>
+							<img
+								className="placeholder-img"
+								src={placeholderImg}
+								alt="placeholder"
+							></img>
 						) : (
 							<ImageGallery
 								items={images}

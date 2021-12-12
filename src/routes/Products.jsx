@@ -20,6 +20,7 @@ import "./Product.style.css";
 
 const tags = ["tag 1", "tag 2", "tag 3"];
 
+// To be changed to hard coded min-max
 const PriceFilter = ({ min, max, handleSubmit }) => {
 	const [minInput, setMinInput] = useState(0);
 	const [maxInput, setMaxInput] = useState(0);
