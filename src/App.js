@@ -14,6 +14,7 @@ import NoMatch from "./routes/NoMatch";
 import Footer from "./components/Footer/Footer.jsx";
 import Contact from "./routes/Contact";
 import ProductDetail from "./routes/ProductDetail";
+import CartPage from "./routes/CartPage";
 import api from "./api";
 
 export const AuthContext = createContext();
@@ -64,6 +65,7 @@ function App() {
 						</ProtectedRoute>
 						<Route path="/contact" element={<Contact />}></Route>
 						<Route path="/products/:id" element={<ProductDetail />}></Route>
+						<Route path="/cart" element={<CartPage />}></Route>
 						<Route path="*" element={<NoMatch />}></Route>
 					</Routes>
 					<Footer />
