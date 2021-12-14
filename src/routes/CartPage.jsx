@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { Container, Row, Col, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 import api from "../api";
 import "./CartPage.style.css";
@@ -46,11 +47,16 @@ const CartPage = () => {
 			</Helmet>
 			<Container>
 				<h1>Your Cart</h1>
-				<Row className="gx-5">
-					<Col xs={12} md={7} lg={8} className="py-2">
-						<Row className="gy-3 px-3">
-							{!isLoading &&
-								cart.products.map((product) => {
+
+				{isLoading ? (
+					<h4>
+						Your cart is empty. <Link to="/products">Go shop something!</Link>
+					</h4>
+				) : (
+					<Row className="gx-5">
+						<Col xs={12} md={7} lg={8} className="py-2">
+							<Row className="gy-3 px-3">
+								{cart.products.map((product) => {
 									return (
 										<Col xs={12} className="p-3 cart-item">
 											<Row>
@@ -75,37 +81,36 @@ const CartPage = () => {
 														}}
 													/>
 												</Col>
-												<Col className="d-flex align-items-center">
-													Remove
-												</Col>
+												<Col className="d-flex align-items-center">Remove</Col>
 											</Row>
 										</Col>
 									);
 								})}
-						</Row>
-					</Col>
-					<Col xs={12} md={5} lg={4} className="py-2">
-						<div className="p-3 d-flex flex-column subtotal-section">
-							<Row>
-								<Col Col xs={9}>
-									<h5>Subtotal:</h5>
-									<h5>With Discount:</h5>
-									<div>You save:</div>
-								</Col>
-								<Col xs={3} className="d-flex flex-column align-items-end">
-									<h5>
-										<s>${cart.listedTotal}</s>
-									</h5>
-									<h5>${cart.discountTotal}</h5>
-									<div>${cart.listedTotal - cart.discountTotal}</div>
-								</Col>
 							</Row>
-							<Button variant="success" className="mt-3" size="lg">
-								Proceed to Checkout
-							</Button>
-						</div>
-					</Col>
-				</Row>
+						</Col>
+						<Col xs={12} md={5} lg={4} className="py-2">
+							<div className="p-3 d-flex flex-column subtotal-section">
+								<Row>
+									<Col Col xs={9}>
+										<h5>Subtotal:</h5>
+										<h5>With Discount:</h5>
+										<div>You save:</div>
+									</Col>
+									<Col xs={3} className="d-flex flex-column align-items-end">
+										<h5>
+											<s>${cart.listedTotal}</s>
+										</h5>
+										<h5>${cart.discountTotal}</h5>
+										<div>${cart.listedTotal - cart.discountTotal}</div>
+									</Col>
+								</Row>
+								<Button variant="success" className="mt-3" size="lg">
+									Proceed to Checkout
+								</Button>
+							</div>
+						</Col>
+					</Row>
+				)}
 			</Container>
 		</div>
 	);
