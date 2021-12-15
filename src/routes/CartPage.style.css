@@ -2,3 +2,23 @@
 	border: 1px solid rgba(0, 0, 0, 0.125);
   border-radius: 5px;
 }
+
+.cart-item-image {
+  width: 200px;
+  height: 100px;
+}
+
+.cart-item-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cart-item .quantity-form {
+  height: 30px;
+}
+
+.cart-item .form-check-input {
+  width: 20px;
+  height: 20px;
+}

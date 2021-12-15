@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
-import { Container, Row, Col, Button } from "react-bootstrap";
+import { Container, Row, Col, Button, Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 import api from "../api";
 import "./CartPage.style.css";
 
 const CartPage = () => {
-	const [cart, setCart] = useState({});
+	const [cart, setCart] = useState(null);
 	const [isLoading, setLoading] = useState(true);
 
 	const fetchCart = async () => {
@@ -22,11 +22,11 @@ const CartPage = () => {
 			const res = await api.get("api/cart");
 
 			if (res.data.success) {
-				console.log(res.data.data);
 				setCart(res.data.data);
 				setLoading(false);
 			}
 		} catch (err) {
+			setLoading(false);
 			console.log(err);
 		}
 	};
@@ -35,10 +35,42 @@ const CartPage = () => {
 		fetchCart();
 	}, []);
 
-	const handleQuantityChange = (e, id) => {
-		console.log(e.target.value);
-		console.log(id);
+	const handleQuantityChange = async (e, id, quantity) => {
+		setLoading(true);
+
+		const payload = {
+			productId: id,
+			quantity: e.target.value === "+" ? quantity + 1 : quantity - 1,
+		};
+
+		try {
+			const res = await api.put("api/cart/item/update", payload);
+			if (res.data.success) {
+				fetchCart();
+			}
+		} catch (err) {
+			console.log(err);
+		}
 	};
+
+	const handleRemoveItem = async (id) => {
+		setLoading(true);
+		try {
+			const res = await api.put("api/cart/item/remove", {
+				productId: id,
+			});
+
+			if (res.data.success) {
+				fetchCart();
+			}
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+  const handleCheckout = (data) => {
+    console.log(data)
+  }
 
 	return (
 		<div className="mt-4">
@@ -46,9 +78,13 @@ const CartPage = () => {
 				<title>Voucher Shop - Cart</title>
 			</Helmet>
 			<Container>
-				<h1>Your Cart</h1>
-
-				{isLoading ? (
+				<div className="d-flex align-items-center">
+					<h1>Your Cart</h1>
+					{isLoading && (
+						<Spinner animation="border" size="sm" className="mx-2" />
+					)}
+				</div>
+				{!cart ? (
 					<h4>
 						Your cart is empty. <Link to="/products">Go shop something!</Link>
 					</h4>
@@ -58,30 +94,88 @@ const CartPage = () => {
 							<Row className="gy-3 px-3">
 								{cart.products.map((product) => {
 									return (
-										<Col xs={12} className="p-3 cart-item">
+										<Col
+											xs={12}
+											className="p-1 cart-item"
+											key={product.product._id}
+										>
 											<Row>
-												<Col className="d-flex align-items-center justify-content-around">
-													<span>{product.product.name}</span>
-													<span>${product.product.discountPrice}</span>
+												<Col
+													xs={12}
+													lg={7}
+													className="d-flex flex-column justify-content-around"
+												>
+													<div className="d-flex">
+														<div className="cart-item-image">
+															<Link
+																to={`/products/${product.product._id}`}
+																className="text-reset text-decoration-none"
+															>
+																<img
+																	src={product.product.avatar}
+																	alt={product.product.name}
+																/>
+															</Link>
+														</div>
+														<div className="d-flex flex-column justify-content-between px-3">
+															<Link
+																to={`/products/${product.product._id}`}
+																className="text-reset text-decoration-none"
+															>
+																<h4>{product.product.name}</h4>
+															</Link>
+															<div className="px-1">
+																<s>${product.product.listedPrice}</s>
+															</div>
+															<div className="px-1 price">
+																${product.product.discountPrice}
+															</div>
+														</div>
+													</div>
 												</Col>
-												<Col className="quantity-form py-3 d-flex justify-content-center">
-													<input
-														type="button"
-														value="-"
-														onClick={(e) => {
-															handleQuantityChange(e, product.product._id);
+												<Col
+													xs={12}
+													lg={5}
+													className="d-flex justify-content-between align-items-center my-2"
+												>
+													<div className="d-flex justify-content-center px-3 quantity-form">
+														<input
+															type="button"
+															value="-"
+															onClick={(e) => {
+																handleQuantityChange(
+																	e,
+																	product.product._id,
+																	product.quantity
+																);
+															}}
+															disabled={isLoading}
+														/>
+														<input type="number" value={product.quantity} />
+														<input
+															type="button"
+															value="+"
+															onClick={(e) => {
+																handleQuantityChange(
+																	e,
+																	product.product._id,
+																	product.quantity
+																);
+															}}
+															disabled={isLoading}
+														/>
+													</div>
+													<Button
+														variant="danger"
+														className="mx-4"
+														onClick={() => {
+															handleRemoveItem(product.product._id);
 														}}
-													/>
-													<input type="number" value={product.quantity} />
-													<input
-														type="button"
-														value="+"
-														onClick={(e) => {
-															handleQuantityChange(e, product.product._id);
-														}}
-													/>
+														disabled={isLoading}
+													>
+														Remove
+													</Button>
 												</Col>
-												<Col className="d-flex align-items-center">Remove</Col>
 											</Row>
 										</Col>
 									);
@@ -104,7 +198,15 @@ const CartPage = () => {
 										<div>${cart.listedTotal - cart.discountTotal}</div>
 									</Col>
 								</Row>
-								<Button variant="success" className="mt-3" size="lg">
+								<Button
+									variant="success"
+									className="mt-3"
+									size="lg"
+									disabled={isLoading}
+									onClick={() => {
+										handleCheckout(cart);
+									}}
+								>
 									Proceed to Checkout
 								</Button>
 							</div>
