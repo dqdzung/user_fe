@@ -31,12 +31,16 @@ const Footer = () => {
 						</Col>
 						<Col className="mb-3" xs={12} md={4}>
 							<h3>About Us</h3>
-							<Link to="/about" className="text-reset text-decoration-none">
-								<div>Our Story</div>
-							</Link>
-							<Link to="/contact" className="text-reset text-decoration-none">
-								<div>Contact Us</div>
-							</Link>
+							<div>
+								<Link to="/about" className="text-reset text-decoration-none">
+									Our Story
+								</Link>
+							</div>
+							<div>
+								<Link to="/contact" className="text-reset text-decoration-none">
+									Contact Us
+								</Link>
+							</div>
 							<div>Policy</div>
 							<div>FAQ</div>
 						</Col>
