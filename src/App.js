@@ -15,7 +15,13 @@ import Footer from "./components/Footer/Footer.jsx";
 import Contact from "./routes/Contact";
 import ProductDetail from "./routes/ProductDetail";
 import CartPage from "./routes/CartPage";
+import Checkout from "./routes/Checkout";
 import api from "./api";
+import { loadStripe } from "@stripe/stripe-js";
+
+const stripePromise = loadStripe(
+	"pk_test_51K2XQmG4O6UAM7MpJnpzEUcBVJV1jlDxMaI6uNw7eCWrl5XEsOdudWZ7kkzAboMzDsUoh7RxOuYKnu5LF8BzbEMw004e6JvTUu"
+);
 
 export const AuthContext = createContext();
 
@@ -66,6 +72,10 @@ function App() {
 						<Route path="/contact" element={<Contact />}></Route>
 						<Route path="/products/:id" element={<ProductDetail />}></Route>
 						<Route path="/cart" element={<CartPage />}></Route>
+						<Route
+							path="/checkout/:method"
+							element={<Checkout stripe={stripePromise} />}
+						></Route>
 						<Route path="*" element={<NoMatch />}></Route>
 					</Routes>
 					<Footer />

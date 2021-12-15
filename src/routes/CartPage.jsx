@@ -1,7 +1,14 @@
 import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
-import { Container, Row, Col, Button, Spinner } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import {
+	Container,
+	Row,
+	Col,
+	Button,
+	Spinner,
+	FormSelect,
+} from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
 
 import api from "../api";
 import "./CartPage.style.css";
@@ -9,6 +16,8 @@ import "./CartPage.style.css";
 const CartPage = () => {
 	const [cart, setCart] = useState(null);
 	const [isLoading, setLoading] = useState(true);
+	const [paymentMethod, setPaymentMethod] = useState(null);
+	const navigate = useNavigate();
 
 	const fetchCart = async () => {
 		const token = localStorage.getItem("token");
@@ -68,9 +77,18 @@ const CartPage = () => {
 		}
 	};
 
-  const handleCheckout = (data) => {
-    console.log(data)
-  }
+	const handleSelect = (method) => {
+		setPaymentMethod(method);
+	};
+
+	const toCheckout = (method) => {
+		if (!method) {
+			alert("Please choose a payment method"); //to be changed
+			return;
+		}
+
+		navigate(`/checkout/${method}`);
+	};
 
 	return (
 		<div className="mt-4">
@@ -198,13 +216,26 @@ const CartPage = () => {
 										<div>${cart.listedTotal - cart.discountTotal}</div>
 									</Col>
 								</Row>
+								<FormSelect
+									className="mt-3"
+									aria-label="Payment Method"
+									onChange={(e) => {
+										handleSelect(e.target.value);
+									}}
+								>
+									<option selected disabled>
+										Payment method
+									</option>
+									<option value="cod">COD</option>
+									<option value="stripe">Stripe</option>
+								</FormSelect>
 								<Button
 									variant="success"
 									className="mt-3"
 									size="lg"
 									disabled={isLoading}
 									onClick={() => {
-										handleCheckout(cart);
+										toCheckout(paymentMethod);
 									}}
 								>
 									Proceed to Checkout
