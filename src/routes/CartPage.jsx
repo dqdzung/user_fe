@@ -103,9 +103,11 @@ const CartPage = () => {
 					)}
 				</div>
 				{!cart ? (
-					<h4>
-						Your cart is empty. <Link to="/products">Go shop something!</Link>
-					</h4>
+					!isLoading && (
+						<h4>
+							Your cart is empty. <Link to="/products">Go shop something!</Link>
+						</h4>
+					)
 				) : (
 					<Row className="gx-5">
 						<Col xs={12} md={7} lg={8} className="py-2">
@@ -219,11 +221,12 @@ const CartPage = () => {
 								<FormSelect
 									className="mt-3"
 									aria-label="Payment Method"
+									defaultValue="default"
 									onChange={(e) => {
 										handleSelect(e.target.value);
 									}}
 								>
-									<option selected disabled>
+									<option value="default" disabled>
 										Payment method
 									</option>
 									<option value="cod">COD</option>

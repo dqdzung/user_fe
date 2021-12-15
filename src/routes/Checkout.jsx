@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { Container, Row, Col, Button, Form, Spinner } from "react-bootstrap";
 import { Elements, CardElement } from "@stripe/react-stripe-js";
 
@@ -77,6 +77,7 @@ const Checkout = ({ stripe }) => {
 						<Spinner animation="border" size="sm" className="mx-2" />
 					)}
 				</div>
+				<Link to="/cart">Back to Cart</Link>
 				{data && (
 					<Row>
 						{/* <h2 className="mt-3">${data.discountTotal}</h2> */}
