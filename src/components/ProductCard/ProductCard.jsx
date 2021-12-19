@@ -1,16 +1,22 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Card, Col, Button, Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import api from "../../api";
 
 import "./ProductCard.style.css";
 import placeholderImg from "./placeholder-image.png";
+import { AuthContext } from "../../App";
 
 const ProductCard = ({ data }) => {
+	const { user } = useContext(AuthContext);
 	const [isLoading, setLoading] = useState(false);
 	const { avatar, name, description, listedPrice, discountPrice, _id } = data;
 
 	const handleAddCart = async (id) => {
+		if (!user) {
+			alert("Please log in!");
+      return;
+		}
 		setLoading(true);
 
 		try {
