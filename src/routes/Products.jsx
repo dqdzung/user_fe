@@ -20,8 +20,6 @@ import placeholderImg from "../components/ProductCard/placeholder-image.png";
 import ProductCard from "../components/ProductCard/ProductCard";
 import "./Product.style.css";
 
-const tags = ["tag 1", "tag 2", "tag 3"];
-
 const PriceFilter = ({ min, max, handleSubmit }) => {
 	const [minInput, setMinInput] = useState(0);
 	const [maxInput, setMaxInput] = useState(0);

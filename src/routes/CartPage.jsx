@@ -65,6 +65,8 @@ const PaymentForm = ({ total, disabled }) => {
 				if (paymentIntent.status === "succeeded") {
 					alert("Payment succeeded!");
 					setDisabled(false);
+					//delete cart
+					await api.delete("api/cart");
 					//call order/invoice api here and show success page
 				}
 			}
