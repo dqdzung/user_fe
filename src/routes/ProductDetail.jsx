@@ -8,6 +8,7 @@ import {
 	Form,
 	Placeholder,
 	Button,
+	Spinner,
 } from "react-bootstrap";
 
 import ImageGallery from "react-image-gallery";
@@ -21,6 +22,7 @@ const ProductDetail = () => {
 	const [data, setData] = useState({});
 	const [quantity, setQuantity] = useState(1);
 	const [isLoading, setLoading] = useState(true);
+	const [isAddingCart, setAddingCart] = useState(false);
 	const [images, setImages] = useState([
 		{
 			original: placeholderImg,
@@ -67,6 +69,25 @@ const ProductDetail = () => {
 			return;
 		}
 		setQuantity(quantity - 1);
+	};
+
+	const handleAddCart = async (id, quantity) => {
+		setAddingCart(true);
+
+		try {
+			const res = await api.post("api/cart", {
+				productId: id,
+				quantity,
+			});
+
+			if (res.data.success) {
+				setAddingCart(false);
+        setQuantity(1)
+				alert("Item added to cart!"); // To be replaced by a toast notification
+			}
+		} catch (err) {
+			console.log(err);
+		}
 	};
 
 	return (
@@ -149,9 +170,29 @@ const ProductDetail = () => {
 										<input type="number" value={quantity} />
 										<input type="button" value="+" onClick={plus} />
 									</div>
-									<Button variant="warning" className="shadow" size="lg">
-										ADD TO CART
-									</Button>
+									<div className="d-flex align-items-center">
+										<Button
+											variant="warning"
+											className="shadow"
+											size="lg"
+											disabled={isAddingCart}
+											onClick={() => {
+												handleAddCart(data._id, quantity);
+											}}
+										>
+											ADD TO CART
+										</Button>
+										{isAddingCart && (
+											<Spinner
+												as="span"
+                        size="sm"
+												animation="border"
+												role="status"
+												aria-hidden="true"
+                        className="mx-2"
+											/>
+										)}
+									</div>
 								</Form>
 							</Col>
 						</Row>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Helmet } from "react-helmet";
 import {
 	Container,
@@ -12,15 +12,14 @@ import {
 	InputGroup,
 	Button,
 } from "react-bootstrap";
+import { useSearchParams, useLocation } from "react-router-dom";
+import { debounce } from "debounce";
 
 import api from "../api";
 import placeholderImg from "../components/ProductCard/placeholder-image.png";
 import ProductCard from "../components/ProductCard/ProductCard";
 import "./Product.style.css";
 
-const tags = ["tag 1", "tag 2", "tag 3"];
-
-// To be changed to hard coded min-max
 const PriceFilter = ({ min, max, handleSubmit }) => {
 	const [minInput, setMinInput] = useState(0);
 	const [maxInput, setMaxInput] = useState(0);
@@ -85,29 +84,42 @@ const PriceFilter = ({ min, max, handleSubmit }) => {
 
 const Products = () => {
 	const [isLoading, setIsLoading] = useState(true);
-	const [min, setMin] = useState(0);
-	const [max, setMax] = useState(0);
 	const [products, setProducts] = useState([]);
-	const [searchTerm, setTerm] = useState("");
-	const [searchResults, setResults] = useState([]);
-	const [pageItems, setPageItems] = useState([]);
+	const [searchParams, setSearchParams] = useSearchParams();
+	const [searchTerm, setTerm] = useState(searchParams.get("name"));
 	const [totalPage, setTotalPage] = useState(0);
-	const [currentPage, setCurrentPage] = useState(1);
-	const pageSize = 4;
+	const [currentPage, setCurrentPage] = useState(searchParams.get("page") || 1);
+	const pageSize = 10;
+	const searchInputRef = useRef(null);
+
+	const location = useLocation();
 
 	const fetchProducts = async () => {
+		setIsLoading(true);
+		const page = searchParams.get("page");
+		const search = searchParams.get("name");
+		const min = searchParams.get("min");
+		const max = searchParams.get("max");
+
+		searchInputRef.current.value = search;
+
+		if (!page) {
+			setCurrentPage(1);
+		}
+
+		const url = `/api/product?${search ? `name=${search}&` : ""}page=${
+			page ? page : 1
+		}&perPage=${pageSize}${
+			min && max ? `&minPrice=${min}&maxPrice=${max}` : ""
+		}`;
+
 		try {
-			const res = await api.get("/api/product/getAll");
+			const res = await api.get(url);
 
 			if (res.status === 200) {
-				setProducts(res.data.products);
-				setPageItems(getPageItems(res.data.products, 1));
-				setTotalPage((res.data.products.length + pageSize - 1) / pageSize);
+				setProducts(res.data.docs);
+				setTotalPage((res.data.totalDocs + pageSize - 1) / pageSize);
 				setIsLoading(false);
-
-				const [min, max] = getMinMaxPrice(res.data.products);
-				setMin(min);
-				setMax(max);
 			}
 		} catch (err) {
 			console.log(err);
@@ -115,47 +127,41 @@ const Products = () => {
 	};
 
 	useEffect(() => {
+		console.log("fetch");
 		fetchProducts();
 		// eslint-disable-next-line
-	}, []);
-
-	const getMinMaxPrice = (products) => {
-		const max = Math.max.apply(
-			Math,
-			products.map((product) => product.discountPrice)
-		);
-
-		const min = Math.min.apply(
-			Math,
-			products.map((product) => product.discountPrice)
-		);
-
-		return [min, max];
-	};
-
-	const getPageItems = (array, pageNumber) => {
-		const offset = (pageNumber - 1) * pageSize;
-		return array.slice(offset, offset + pageSize);
-	};
+	}, [location]);
 
 	const handlePageChange = (number) => {
-		const items = searchTerm ? searchResults : products;
-		setPageItems(getPageItems(items, number));
+		if (searchTerm) {
+			setSearchParams({ name: searchTerm, page: number });
+		} else {
+			searchParams.set("page", number);
+			setSearchParams(searchParams);
+		}
 		setCurrentPage(number);
 	};
 
 	const handleSearchInput = (e) => {
-		setTerm(e.target.value);
-		const searchRegExp = new RegExp(e.target.value, "ig");
-		const results = products.filter((item) => item.name.match(searchRegExp));
-		setResults(results);
-		setTotalPage((results.length + pageSize - 1) / pageSize);
-		setPageItems(getPageItems(results, 1));
 		setCurrentPage(1);
+		setTerm(e.target.value);
+
+		if (!e.target.value) {
+			setSearchParams({ page: 1 });
+			return;
+		}
+
+		setSearchParams({ name: e.target.value, min: 0, max: 15000 });
 	};
 
 	const handlePriceFilter = (min, max) => {
-		console.log("hello", min, max);
+		if (!min && !max) {
+			setSearchParams({ page: 1 });
+			return;
+		}
+
+		setCurrentPage(1);
+		setSearchParams({ min, max });
 	};
 
 	const PaginationComp = ({ total, current }) => {
@@ -164,7 +170,8 @@ const Products = () => {
 			items.push(
 				<Pagination.Item
 					key={number}
-					active={number === current}
+					// eslint-disable-next-line
+					active={number == current}
 					onClick={() => {
 						handlePageChange(number);
 					}}
@@ -206,6 +213,14 @@ const Products = () => {
 	);
 
 	const ProductList = ({ items }) => {
+		if (!items.length) {
+			return (
+				<Container>
+					<h3 className="text-center my-3">No Products...</h3>
+				</Container>
+			);
+		}
+
 		return items.map((item) => <ProductCard key={item._id} data={item} />);
 	};
 
@@ -218,7 +233,7 @@ const Products = () => {
 				{/* Side nav */}
 				<div className="product-side-nav">
 					{/* Tags */}
-					<div className="tag-section mb-4">
+					{/* <div className="tag-section mb-4">
 						<div className="tag-section-header mb-2 text-center">Tags</div>
 						<Form>
 							<Row>
@@ -240,21 +255,22 @@ const Products = () => {
 								))}
 							</Row>
 						</Form>
-					</div>
+					</div> */}
 					{/* Price filter */}
-					<PriceFilter min={min} max={max} handleSubmit={handlePriceFilter} />
+					<PriceFilter min={0} max={15000} handleSubmit={handlePriceFilter} />
 				</div>
 
 				{/* Products section */}
 				<div className="product-main">
-					<Form className="w-100 px-3">
+					<div className="w-100 px-3">
 						<FormControl
+							ref={searchInputRef}
 							type="search"
 							placeholder="Search"
 							aria-label="Search"
-							onChange={handleSearchInput}
+							onChange={debounce(handleSearchInput, 1000)}
 						/>
-					</Form>
+					</div>
 					<Row className="product-list">
 						{isLoading ? (
 							<>
@@ -262,14 +278,17 @@ const Products = () => {
 								<PlaceholderCard />
 							</>
 						) : (
-							<ProductList items={pageItems} />
+							<ProductList items={products} />
 						)}
 					</Row>
-
 					{/* Pagination */}
-					<div className="d-flex justify-content-center">
-						<PaginationComp total={totalPage} current={currentPage} />
-					</div>
+					{products.length ? (
+						<div className="d-flex justify-content-center">
+							<PaginationComp total={totalPage} current={currentPage} />
+						</div>
+					) : (
+						<></>
+					)}
 				</div>
 			</Container>
 		</>

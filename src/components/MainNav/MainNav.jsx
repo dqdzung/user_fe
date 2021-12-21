@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { Container, Navbar, Nav } from "react-bootstrap";
+import { Container, Navbar, Nav, NavDropdown } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import "./MainNav.style.css";
 import LoginModal from "../Modals/LoginModal";
@@ -45,23 +45,40 @@ const MainNav = () => {
 							<Link to="/about">About Us</Link>
 						</Nav>
 						{!user ? (
-							<div
-								className="nav-link"
-								onClick={() => {
-									showModal("login");
-								}}
-							>
-								Login
-							</div>
-						) : (
-							<div className="d-flex">
-								<Nav>
-									<Link to="/user/me">{user.firstName}</Link>
-								</Nav>
-								<div className="nav-link" onClick={handleLogout}>
-									Log out
+							<>
+								<div
+									className="nav-link"
+									onClick={() => {
+										showModal("login");
+									}}
+								>
+									Login
 								</div>
-							</div>
+							</>
+						) : (
+							<>
+								<div
+									className="nav-link"
+									onClick={() => {
+										navigate("/cart");
+									}}
+								>
+									Cart
+								</div>
+								<NavDropdown title={user.firstName}>
+									<NavDropdown.Item
+										onClick={() => {
+											navigate("/user/me");
+										}}
+									>
+										Profile
+									</NavDropdown.Item>
+
+									<NavDropdown.Item onClick={handleLogout}>
+										Log out
+									</NavDropdown.Item>
+								</NavDropdown>
+							</>
 						)}
 					</Navbar.Collapse>
 				</Container>

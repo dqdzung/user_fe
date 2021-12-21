@@ -9,6 +9,7 @@
 	width: 50px;
 	text-align: center;
   margin: 0 1px;
+  caret-color: transparent;
 }
 
 .quantity-form input[type="button"] {
@@ -16,6 +17,10 @@
 	border: none;
   border-radius: 5px;
 	transition: all 0.5s;
+}
+
+.quantity-form input[type="number"] {
+  pointer-events: none;
 }
 
 .detail-price {
