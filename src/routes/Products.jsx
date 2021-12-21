@@ -127,7 +127,6 @@ const Products = () => {
 	};
 
 	useEffect(() => {
-		console.log("fetch");
 		fetchProducts();
 		// eslint-disable-next-line
 	}, [location]);
