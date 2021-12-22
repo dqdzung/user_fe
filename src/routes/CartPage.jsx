@@ -82,7 +82,7 @@ const PaymentForm = ({ cart, disabled }) => {
 					};
 
 					const res = await api.post("api/order/user/addOrder", payload);
-					navigate(`/payment-success/${res.data._id}`);
+					navigate(`/payment-success/${res.data.order._id}`);
 				}
 			}
 		} catch (err) {
