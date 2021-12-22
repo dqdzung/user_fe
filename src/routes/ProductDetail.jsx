@@ -9,6 +9,7 @@ import {
 	Placeholder,
 	Button,
 	Spinner,
+	Badge,
 } from "react-bootstrap";
 
 import ImageGallery from "react-image-gallery";
@@ -82,12 +83,16 @@ const ProductDetail = () => {
 
 			if (res.data.success) {
 				setAddingCart(false);
-        setQuantity(1)
+				setQuantity(1);
 				alert("Item added to cart!"); // To be replaced by a toast notification
 			}
 		} catch (err) {
 			console.log(err);
 		}
+	};
+
+	const handleClickTag = (tag) => {
+		console.log("clicked", tag);
 	};
 
 	return (
@@ -120,7 +125,7 @@ const ProductDetail = () => {
 					<Col lg={6} xs={12}>
 						<Row>
 							<Col xs={6} sm={6} md={6} lg={12}>
-								<h1 className="py-3">
+								<h1 className="py-3 text-capitalize">
 									{isLoading ? (
 										<Placeholder animation="glow">
 											<Placeholder xs={6} />
@@ -185,11 +190,11 @@ const ProductDetail = () => {
 										{isAddingCart && (
 											<Spinner
 												as="span"
-                        size="sm"
+												size="sm"
 												animation="border"
 												role="status"
 												aria-hidden="true"
-                        className="mx-2"
+												className="mx-2"
 											/>
 										)}
 									</div>
@@ -198,7 +203,29 @@ const ProductDetail = () => {
 						</Row>
 					</Col>
 				</Row>
-				<hr className="mt-4" />
+				<div className="mt-3">
+					{isLoading ? (
+						<Placeholder animation="glow">
+							<Placeholder xs={1} />
+						</Placeholder>
+					) : (
+						data.tags.length &&
+						data.tags.map((tag) => (
+							<Badge
+								pill
+								bg="info"
+								key={tag}
+								className="tag"
+								onClick={() => {
+									handleClickTag(tag);
+								}}
+							>
+								{tag}
+							</Badge>
+						))
+					)}
+				</div>
+				<hr className="mt-3" />
 				<section>
 					<h3>Description</h3>
 					<p>

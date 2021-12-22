@@ -151,7 +151,7 @@ const Products = () => {
 			return;
 		}
 
-		setSearchParams({ name: e.target.value, min: 0, max: 15000 });
+		setSearchParams({ name: e.target.value, min: 0, max: 30000 });
 	};
 
 	const handlePriceFilter = (min, max) => {
@@ -162,6 +162,13 @@ const Products = () => {
 
 		setCurrentPage(1);
 		setSearchParams({ min, max });
+	};
+
+	const handleClickTag = (tag) => {
+		// To be changed
+		console.log("clicked", tag);
+		setCurrentPage(1);
+		setSearchParams({ filter: tag });
 	};
 
 	const PaginationComp = ({ total, current }) => {
@@ -212,7 +219,7 @@ const Products = () => {
 		</Col>
 	);
 
-	const ProductList = ({ items }) => {
+	const ProductList = ({ items, onClickTag }) => {
 		if (!items.length) {
 			return (
 				<Container>
@@ -221,7 +228,9 @@ const Products = () => {
 			);
 		}
 
-		return items.map((item) => <ProductCard key={item._id} data={item} />);
+		return items.map((item) => (
+			<ProductCard key={item._id} data={item} onClickTag={onClickTag} />
+		));
 	};
 
 	return (
@@ -232,34 +241,8 @@ const Products = () => {
 			<Container className="product-content d-flex mt-4">
 				{/* Side nav */}
 				<div className="product-side-nav">
-					{/* Tags */}
-					{/* <div className="tag-section mb-4">
-						<div className="tag-section-header mb-2 text-center">Tags</div>
-						<Form>
-							<Row>
-								{tags.map((tag) => (
-									<Col
-										xs={4}
-										md={12}
-										lg={12}
-										className="d-flex justify-content-center py-2 px-4"
-										key={tags.indexOf(tag)}
-									>
-										<Form.Check
-											type="radio"
-											id={tags.indexOf(tag)}
-											label={tag}
-											name="tag-select"
-										/>
-									</Col>
-								))}
-							</Row>
-						</Form>
-					</div> */}
-					{/* Price filter */}
-					<PriceFilter min={0} max={15000} handleSubmit={handlePriceFilter} />
+					<PriceFilter min={0} max={30000} handleSubmit={handlePriceFilter} />
 				</div>
-
 				{/* Products section */}
 				<div className="product-main">
 					<div className="w-100 px-3">
@@ -278,7 +261,7 @@ const Products = () => {
 								<PlaceholderCard />
 							</>
 						) : (
-							<ProductList items={products} />
+							<ProductList items={products} onClickTag={handleClickTag} />
 						)}
 					</Row>
 					{/* Pagination */}

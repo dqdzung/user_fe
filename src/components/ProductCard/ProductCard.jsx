@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { Card, Col, Button, Spinner } from "react-bootstrap";
+import { Card, Col, Button, Spinner, Badge } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import api from "../../api";
 
@@ -7,15 +7,15 @@ import "./ProductCard.style.css";
 import placeholderImg from "./placeholder-image.png";
 import { AuthContext } from "../../App";
 
-const ProductCard = ({ data }) => {
+const ProductCard = ({ data, onClickTag }) => {
 	const { user } = useContext(AuthContext);
 	const [isLoading, setLoading] = useState(false);
-	const { avatar, name, description, listedPrice, discountPrice, _id } = data;
+	const { avatar, name, listedPrice, tags, discountPrice, _id } = data;
 
 	const handleAddCart = async (id) => {
 		if (!user) {
 			alert("Please log in!");
-      return;
+			return;
 		}
 		setLoading(true);
 
@@ -44,12 +44,27 @@ const ProductCard = ({ data }) => {
 					<Card.Img variant="top" src={avatar || placeholderImg} />
 				</Link>
 				<Card.Body>
-					<Card.Title>{name}</Card.Title>
+					<Card.Title className="text-capitalize">{name}</Card.Title>
 					<hr />
-					<Card.Text>{description || "No description"}</Card.Text>
+					<Card.Text>
+						{tags.length &&
+							tags.map((tag) => (
+								<Badge
+									pill
+									bg="info"
+									key={tag}
+									className="tag"
+									onClick={() => {
+										onClickTag(tag);
+									}}
+								>
+									{tag}
+								</Badge>
+							))}
+					</Card.Text>
 					<div className="d-flex align-items-center justify-content-between">
 						<div className="d-flex">
-							<div className="price px-1">
+							<div className="price px-1 text-muted">
 								<s>{`US$${listedPrice}`}</s>
 							</div>
 							<div className="price px-1">{`US$${discountPrice}`}</div>
