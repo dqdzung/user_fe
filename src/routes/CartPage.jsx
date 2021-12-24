@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { Container, Row, Col, Button, Spinner, Form } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
 	Elements,
 	CardElement,
@@ -30,10 +30,11 @@ const CARD_ELEMENT_OPTIONS = {
 	},
 };
 
-const PaymentForm = ({ total, disabled }) => {
+const PaymentForm = ({ cart, disabled }) => {
 	const elements = useElements();
 	const stripe = useStripe();
 	const [isDisabled, setDisabled] = useState(true);
+	const navigate = useNavigate();
 
 	const handlePayment = async (e) => {
 		e.preventDefault();
@@ -65,13 +66,28 @@ const PaymentForm = ({ total, disabled }) => {
 				if (paymentIntent.status === "succeeded") {
 					alert("Payment succeeded!");
 					setDisabled(false);
-					//delete cart
-					await api.delete("api/cart");
+
 					//call order/invoice api here and show success page
+					const payload = {
+						totalAmount: cart.discountTotal,
+						items: cart.products.map((product) => {
+							return {
+								productId: product.product._id,
+								payablePrice: product.product.discountPrice,
+								purchaseQty: product.quantity,
+							};
+						}),
+						paymentStatus: "completed",
+						paymentType: "card",
+					};
+
+					const res = await api.post("api/order/user/addOrder", payload);
+					navigate(`/payment-success/${res.data.order._id}`);
 				}
 			}
 		} catch (err) {
 			console.log(err);
+			setDisabled(false);
 		}
 	};
 
@@ -96,7 +112,7 @@ const PaymentForm = ({ total, disabled }) => {
 				className="mt-3 pay-btn"
 				disabled={disabled || isDisabled || !stripe}
 			>
-				Pay ${total}
+				Pay ${cart.discountTotal}
 			</Button>
 		</Form>
 	);
@@ -118,7 +134,7 @@ const CartPage = ({ stripePromise }) => {
 			const res = await api.get("api/cart");
 
 			if (res.data.success) {
-				console.log("cart", res.data.data);
+				// console.log("cart", res.data.data);
 				setCart(res.data.data);
 				setLoading(false);
 			}
@@ -173,7 +189,7 @@ const CartPage = ({ stripePromise }) => {
 				</Helmet>
 				<Container>
 					<div className="d-flex align-items-center">
-						<h1>Your Cart</h1>
+						<h2>Your Cart</h2>
 						{isLoading && (
 							<Spinner animation="border" size="sm" className="mx-2" />
 						)}
@@ -295,10 +311,7 @@ const CartPage = ({ stripePromise }) => {
 											<div>${cart.listedTotal - cart.discountTotal}</div>
 										</Col>
 									</Row>
-									<PaymentForm
-										total={cart.discountTotal}
-										disabled={isLoading}
-									/>
+									<PaymentForm cart={cart} disabled={isLoading} />
 									<span className="text-muted text-center mt-2">
 										Powered by{" "}
 										<svg focusable="false" width="33" height="15">

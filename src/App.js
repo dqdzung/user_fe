@@ -15,6 +15,7 @@ import Footer from "./components/Footer/Footer.jsx";
 import Contact from "./routes/Contact";
 import ProductDetail from "./routes/ProductDetail";
 import CartPage from "./routes/CartPage";
+import SuccessPage from "./routes/SuccessPage";
 import api from "./api";
 import { loadStripe } from "@stripe/stripe-js";
 
@@ -74,6 +75,7 @@ function App() {
 							path="/cart"
 							element={<CartPage stripePromise={stripePromise} />}
 						></Route>
+						<Route path="/payment-success/:id" element={<SuccessPage />}></Route>
 						<Route path="*" element={<NoMatch />}></Route>
 					</Routes>
 					<Footer />

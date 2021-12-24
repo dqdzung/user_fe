@@ -1,0 +1,11 @@
+.receipt {
+	border: 1px solid rgba(0, 0, 0, 0.125);
+	border-radius: 20px;
+  width: 50%;
+}
+
+@media (max-width: 768px) {
+	.receipt {
+		width: 70%;
+	}
+}
