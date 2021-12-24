@@ -93,7 +93,7 @@ const ProductDetail = () => {
 	};
 
 	const handleClickTag = (tag) => {
-		navigate(`products?tag=${tag}`);
+		navigate(`/products?tag=${tag}`);
 	};
 
 	return (
