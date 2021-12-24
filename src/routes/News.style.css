@@ -1,0 +1,10 @@
+.news {
+	border: 1px solid rgba(0, 0, 0, 0.125);
+	border-radius: 5px;
+}
+
+.news img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}

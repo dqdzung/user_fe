@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
 	Container,
@@ -30,6 +30,7 @@ const ProductDetail = () => {
 			thumbnail: placeholderImg,
 		},
 	]);
+	const navigate = useNavigate();
 
 	const fetchProduct = async (id) => {
 		try {
@@ -92,7 +93,7 @@ const ProductDetail = () => {
 	};
 
 	const handleClickTag = (tag) => {
-		console.log("clicked", tag);
+		navigate(`products?tag=${tag}`);
 	};
 
 	return (

@@ -82,6 +82,26 @@ const PriceFilter = ({ min, max, handleSubmit }) => {
 	);
 };
 
+export const PaginationComp = ({ total, current, onPageChange }) => {
+	let items = [];
+	for (let number = 1; number <= total; number++) {
+		items.push(
+			<Pagination.Item
+				key={number}
+				// eslint-disable-next-line
+				active={number == current}
+				onClick={() => {
+					onPageChange(number);
+				}}
+			>
+				{number}
+			</Pagination.Item>
+		);
+	}
+
+	return <Pagination>{items}</Pagination>;
+};
+
 const Products = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [products, setProducts] = useState([]);
@@ -168,26 +188,6 @@ const Products = () => {
 		setSearchParams({ tag: tag });
 	};
 
-	const PaginationComp = ({ total, current }) => {
-		let items = [];
-		for (let number = 1; number <= total; number++) {
-			items.push(
-				<Pagination.Item
-					key={number}
-					// eslint-disable-next-line
-					active={number == current}
-					onClick={() => {
-						handlePageChange(number);
-					}}
-				>
-					{number}
-				</Pagination.Item>
-			);
-		}
-
-		return <Pagination>{items}</Pagination>;
-	};
-
 	const PlaceholderCard = () => (
 		<Col xs={12} lg={6} className="p-4">
 			<Card>
@@ -262,12 +262,14 @@ const Products = () => {
 						)}
 					</Row>
 					{/* Pagination */}
-					{products.length ? (
+					{products.length && (
 						<div className="d-flex justify-content-center">
-							<PaginationComp total={totalPage} current={currentPage} />
+							<PaginationComp
+								total={totalPage}
+								current={currentPage}
+								onPageChange={handlePageChange}
+							/>
 						</div>
-					) : (
-						<></>
 					)}
 				</div>
 			</Container>
