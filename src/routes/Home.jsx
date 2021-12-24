@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Carousel, Container, Card, Row, Col, Spinner } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ProductCard from "../components/ProductCard/ProductCard";
 import "./Home.style.css";
 import api from "../api";
@@ -29,6 +29,7 @@ const Home = () => {
 		isHot: [],
 	});
 	const [isLoading, setLoading] = useState(true);
+	const navigate = useNavigate();
 
 	const fetchHomeProducts = async () => {
 		try {
@@ -52,6 +53,10 @@ const Home = () => {
 	useEffect(() => {
 		fetchHomeProducts();
 	}, []);
+
+	const handleClickTag = (tag) => {
+		navigate(`products?tag=${tag}`);
+	};
 
 	return (
 		<>
@@ -89,7 +94,11 @@ const Home = () => {
 							</div>
 						) : (
 							homeProducts.isHot.map((item) => (
-								<ProductCard key={item._id} data={item} />
+								<ProductCard
+									key={item._id}
+									data={item}
+									onClickTag={handleClickTag}
+								/>
 							))
 						)}
 					</Row>

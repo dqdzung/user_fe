@@ -164,10 +164,8 @@ const Products = () => {
 	};
 
 	const handleClickTag = (tag) => {
-		// To be changed
-		console.log("clicked", tag);
 		setCurrentPage(1);
-		setSearchParams({ filter: tag });
+		setSearchParams({ tag: tag });
 	};
 
 	const PaginationComp = ({ total, current }) => {
