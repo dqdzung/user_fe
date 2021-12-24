@@ -48,6 +48,10 @@ const Home = () => {
 		navigate(`news/${id}`);
 	};
 
+	const handleClickBanner = (id) => {
+		navigate(`products/${id}`);
+	};
+
 	return (
 		<>
 			{/* Carousel section */}
@@ -59,7 +63,13 @@ const Home = () => {
 						</Carousel.Item>
 					) : (
 						homeData.inSlider.map((item) => (
-							<Carousel.Item key={item._id} interval={3000}>
+							<Carousel.Item
+								key={item._id}
+								interval={3000}
+								onClick={() => {
+									handleClickBanner(item._id);
+								}}
+							>
 								<img
 									className="d-block w-100 h-auto my-0 mx-auto"
 									src={item.avatar}
