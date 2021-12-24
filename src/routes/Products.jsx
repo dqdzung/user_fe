@@ -262,7 +262,7 @@ const Products = () => {
 						)}
 					</Row>
 					{/* Pagination */}
-					{products.length && (
+					{products.length ? (
 						<div className="d-flex justify-content-center">
 							<PaginationComp
 								total={totalPage}
@@ -270,6 +270,8 @@ const Products = () => {
 								onPageChange={handlePageChange}
 							/>
 						</div>
+					) : (
+						<></>
 					)}
 				</div>
 			</Container>
