@@ -11,6 +11,8 @@ import {
 	Placeholder,
 	InputGroup,
 	Button,
+	Badge,
+	CloseButton,
 } from "react-bootstrap";
 import { useSearchParams, useLocation } from "react-router-dom";
 import { debounce } from "debounce";
@@ -111,6 +113,7 @@ const Products = () => {
 	const [currentPage, setCurrentPage] = useState(searchParams.get("page") || 1);
 	const pageSize = 10;
 	const searchInputRef = useRef(null);
+	const [tagFilter, setTag] = useState(null);
 
 	const location = useLocation();
 
@@ -121,7 +124,9 @@ const Products = () => {
 		const min = searchParams.get("min");
 		const max = searchParams.get("max");
 
-		searchInputRef.current.value = search;
+		if (searchInputRef.current) {
+			searchInputRef.current.value = search;
+		}
 
 		if (!page) {
 			setCurrentPage(1);
@@ -184,8 +189,15 @@ const Products = () => {
 	};
 
 	const handleClickTag = (tag) => {
+		setTag(tag);
 		setCurrentPage(1);
 		setSearchParams({ tag: tag });
+	};
+
+	const handleRemoveTag = () => {
+		searchParams.delete("tag");
+		setSearchParams(searchParams);
+		setTag(null);
 	};
 
 	const PlaceholderCard = () => (
@@ -243,13 +255,23 @@ const Products = () => {
 				{/* Products section */}
 				<div className="product-main">
 					<div className="w-100 px-3">
-						<FormControl
-							ref={searchInputRef}
-							type="search"
-							placeholder="Search"
-							aria-label="Search"
-							onChange={debounce(handleSearchInput, 1000)}
-						/>
+						{tagFilter ? (
+							<div className="d-flex align-items-center">
+								<span>Showing results for</span>
+								<Badge pill bg="info" className="mx-1">
+									{tagFilter}
+								</Badge>
+								<CloseButton onClick={handleRemoveTag} />
+							</div>
+						) : (
+							<FormControl
+								ref={searchInputRef}
+								type="search"
+								placeholder="Search"
+								aria-label="Search"
+								onChange={debounce(handleSearchInput, 1000)}
+							/>
+						)}
 					</div>
 					<Row className="product-list">
 						{isLoading ? (

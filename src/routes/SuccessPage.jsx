@@ -20,7 +20,6 @@ const SuccessPage = () => {
 				orderId: id,
 			});
 
-			console.log("order", res.data.order);
 			setData(res.data.order);
 			setLoading(false);
 		} catch (err) {
