@@ -111,9 +111,9 @@ const Products = () => {
 	const [searchTerm, setTerm] = useState(searchParams.get("name"));
 	const [totalPage, setTotalPage] = useState(0);
 	const [currentPage, setCurrentPage] = useState(searchParams.get("page") || 1);
-	const pageSize = 10;
+	const pageSize = 6;
 	const searchInputRef = useRef(null);
-	const [tagFilter, setTag] = useState(null);
+	const [tagFilter, setTag] = useState(searchParams.get("tag"));
 
 	const location = useLocation();
 
@@ -123,6 +123,7 @@ const Products = () => {
 		const search = searchParams.get("name");
 		const min = searchParams.get("min");
 		const max = searchParams.get("max");
+		const tag = searchParams.get("tag");
 
 		if (searchInputRef.current) {
 			searchInputRef.current.value = search;
@@ -136,7 +137,7 @@ const Products = () => {
 			page ? page : 1
 		}&perPage=${pageSize}${
 			min && max ? `&minPrice=${min}&maxPrice=${max}` : ""
-		}`;
+		}${tag ? `&tag=${tag}` : ""}`;
 
 		try {
 			const res = await api.get(url);

@@ -1,12 +1,63 @@
 import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
-import { useSearchParams, Link } from "react-router-dom";
-import { Container, Row, Col, Badge } from "react-bootstrap";
+import { useSearchParams, Link, useLocation } from "react-router-dom";
+import { Container, Row, Col, Badge, CloseButton } from "react-bootstrap";
 import moment from "moment";
 
 import { PaginationComp } from "./Products";
 import api from "../api";
 import "./News.style.css";
+
+export const NewsCard = ({ article, onClickTag }) => {
+	return (
+		<Col xs={12} className="p-3 my-3 shadow-sm news">
+			<Row>
+				<Col
+					xs={12}
+					lg={4}
+					className="d-flex align-items-center justify-content-center"
+				>
+					<Link to={`/news/${article._id}`}>
+						<img src={article.avatar} alt="news-avatar" />
+					</Link>
+				</Col>
+				<Col xs={12} lg={8}>
+					<Link
+						to={`/news/${article._id}`}
+						className="text-decoration-none text-black"
+					>
+						<h3 className="mt-3">{article.title}</h3>
+					</Link>
+					<div className="my-2">
+						{moment(article.createdAt).format("DD/MM/YYYY")}
+					</div>
+					<p>
+						{article.description ||
+							"Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat eaque ab perspiciatis, commodi culpa aliquam expedita officia ullam ipsa unde. Recusandae excepturi saepe consequatur repudiandae?"}
+					</p>
+					<Link to={`/news/${article._id}`} className="text-decoration-none">
+						Read more...
+					</Link>
+					<div className="mt-3">
+						{article.tags.map((tag) => (
+							<Badge
+								pill
+								bg="info"
+								key={tag}
+								className="tag"
+								onClick={() => {
+									onClickTag(tag);
+								}}
+							>
+								{tag}
+							</Badge>
+						))}
+					</div>
+				</Col>
+			</Row>
+		</Col>
+	);
+};
 
 const News = () => {
 	const [searchParams, setSearchParams] = useSearchParams();
@@ -14,22 +65,28 @@ const News = () => {
 	const [isLoading, setLoading] = useState(true);
 	const [totalPage, setTotalPage] = useState(0);
 	const [currentPage, setCurrentPage] = useState(searchParams.get("page") || 1);
-	const pageSize = 10;
+	const pageSize = 5;
+	const [tagFilter, setTag] = useState(searchParams.get("tag"));
+
+	const location = useLocation();
 
 	const fetchNews = async () => {
+		setLoading(true);
 		const page = searchParams.get("page");
+		const tag = searchParams.get("tag");
 
 		if (!page) {
 			setCurrentPage(1);
 		}
 
-		const url = `/api/post?page=${page ? page : 1}&perPage=${pageSize}`;
+		const url = `/api/post?page=${page ? page : 1}&perPage=${pageSize}${
+			tag ? `&tag=${tag}` : ""
+		}`;
 
 		try {
 			const res = await api.get(url);
 
 			if (res.status === 200) {
-				console.log(res.data);
 				setData(res.data.docs);
 				setTotalPage((res.data.totalDocs + pageSize - 1) / pageSize);
 				setLoading(false);
@@ -43,15 +100,24 @@ const News = () => {
 	useEffect(() => {
 		fetchNews();
 		// eslint-disable-next-line
-	}, []);
+	}, [location]);
 
 	const handlePageChange = (number) => {
-		console.log(number);
+		searchParams.set("page", number);
+		setSearchParams(searchParams);
+		setCurrentPage(number);
 	};
 
 	const handleClickTag = (tag) => {
-		console.log(tag);
+		setTag(tag);
+		setCurrentPage(1);
 		setSearchParams({ tag: tag });
+	};
+
+	const handleRemoveTag = () => {
+		searchParams.delete("tag");
+		setSearchParams(searchParams);
+		setTag(null);
 	};
 
 	return (
@@ -61,46 +127,27 @@ const News = () => {
 			</Helmet>
 			<Container>
 				{isLoading ? (
-					<h2>Loading...</h2>
+					<h2>Loading News...</h2>
 				) : (
 					<>
 						<h1>News</h1>
+						{tagFilter && (
+							<div className="d-flex align-items-center">
+								<span>Showing results for</span>
+								<Badge pill bg="info" className="mx-1">
+									{tagFilter}
+								</Badge>
+								<CloseButton onClick={handleRemoveTag} />
+							</div>
+						)}
 						<Row className="px-3">
 							{data.map((item) => {
 								return (
-									<Col xs={12} className="p-3 my-3 shadow-sm news">
-										<Row>
-											<Col xs={12} md={4} className="d-flex align-items-center">
-												<img src={item.avatar} alt="news-avatar" />
-											</Col>
-											<Col xs={12} md={8}>
-												<h3 className="mt-3">{item.title}</h3>
-												<div className="my-2">
-													{moment(item.createdAt).format("DD/MM/YYYY")}
-												</div>
-												<p>
-													{item.description ||
-														"Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat eaque ab perspiciatis, commodi culpa aliquam expedita officia ullam ipsa unde. Recusandae excepturi saepe consequatur repudiandae?"}
-												</p>
-												<Link to={`/news/${item._id}`} className="text-decoration-none">Read more...</Link>
-												<div className="mt-3">
-													{item.tags.map((tag) => (
-														<Badge
-															pill
-															bg="info"
-															key={tag}
-															className="tag"
-															onClick={() => {
-																handleClickTag(tag);
-															}}
-														>
-															{tag}
-														</Badge>
-													))}
-												</div>
-											</Col>
-										</Row>
-									</Col>
+									<NewsCard
+										article={item}
+										onClickTag={handleClickTag}
+										key={item._id}
+									/>
 								);
 							})}
 						</Row>

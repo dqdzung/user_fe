@@ -17,6 +17,8 @@ import "react-image-gallery/styles/css/image-gallery.css";
 import api from "../api";
 import "./ProductDetail.style.css";
 import placeholderImg from "../components/ProductCard/placeholder-image.png";
+import ProductCard from "../components/ProductCard/ProductCard";
+import { buildTagQuery } from "./NewsDetail";
 
 const ProductDetail = () => {
 	const { id } = useParams();
@@ -30,6 +32,7 @@ const ProductDetail = () => {
 			thumbnail: placeholderImg,
 		},
 	]);
+	const [relatedProducts, setRelatedProducts] = useState(null);
 	const navigate = useNavigate();
 
 	const fetchProduct = async (id) => {
@@ -51,6 +54,22 @@ const ProductDetail = () => {
 
 				setImages(imageData);
 				setLoading(false);
+				// console.log("tags", res.data.product.tags);
+				await fetchRelatedProducts(res.data.product.tags);
+			}
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	const fetchRelatedProducts = async (tagArray) => {
+		const tagQuery = buildTagQuery(tagArray);
+		const url = `api/product?page=1&perPage=4${tagQuery}`;
+		console.log("url", url);
+		try {
+			const res = await api.get(url);
+			if (res.status === 200) {
+				setRelatedProducts(res.data.docs);
 			}
 		} catch (err) {
 			console.log(err);
@@ -238,6 +257,24 @@ const ProductDetail = () => {
 							data.description
 						)}
 					</p>
+				</section>
+				<section>
+					<h3>Related products</h3>
+					{relatedProducts && (
+						<Row>
+							{relatedProducts
+								.filter((item) => item._id !== data._id)
+								.map((item) => {
+									return (
+										<ProductCard
+											data={item}
+											onClickTag={handleClickTag}
+											key={item._id}
+										/>
+									);
+								})}
+						</Row>
+					)}
 				</section>
 			</Container>
 		</div>
