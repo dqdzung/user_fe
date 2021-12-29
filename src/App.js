@@ -9,7 +9,7 @@ import News from "./routes/News";
 import About from "./routes/About";
 import UserPage from "./routes/UserPage";
 import Profile from "./components/Profile/Profile.jsx";
-import PastPurchase from "./components/PastPurchase.jsx";
+import PastPurchase from "./routes/PastPurchase.jsx";
 import NoMatch from "./routes/NoMatch";
 import Footer from "./components/Footer/Footer.jsx";
 import Contact from "./routes/Contact";

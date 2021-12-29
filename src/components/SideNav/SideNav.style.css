@@ -1,13 +1,14 @@
 .side-nav-link {
 	text-align: center;
-  cursor: pointer;
-  font-weight: 500;
+	cursor: pointer;
+	font-weight: 500;
+	border: 1px solid rgba(0, 0, 0, 0.125);
 }
 .side-nav-link:hover {
-  background-color: rgb(236, 236, 236) !important;
+	background-color: rgb(236, 236, 236) !important;
 }
 .side-nav-link:active {
-  transform: translateY(2px);
+	transform: translateY(2px);
 }
 @media (max-width: 768px) {
 	.side-nav {
