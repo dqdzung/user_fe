@@ -5,7 +5,14 @@
 	text-align: center;
 }
 
+.carousel-inner img {
+  cursor: pointer;
+}
+
 .news-section {
 	background-color: #f8f8f8;
 }
 
+.news-card {
+  cursor: pointer;
+}

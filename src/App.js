@@ -16,6 +16,7 @@ import Contact from "./routes/Contact";
 import ProductDetail from "./routes/ProductDetail";
 import CartPage from "./routes/CartPage";
 import SuccessPage from "./routes/SuccessPage";
+import NewsDetail from "./routes/NewsDetail";
 import api from "./api";
 import { loadStripe } from "@stripe/stripe-js";
 
@@ -75,7 +76,11 @@ function App() {
 							path="/cart"
 							element={<CartPage stripePromise={stripePromise} />}
 						></Route>
-						<Route path="/payment-success/:id" element={<SuccessPage />}></Route>
+						<Route
+							path="/payment-success/:id"
+							element={<SuccessPage />}
+						></Route>
+						<Route path="/news/:id" element={<NewsDetail />}></Route>
 						<Route path="*" element={<NoMatch />}></Route>
 					</Routes>
 					<Footer />
