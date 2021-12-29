@@ -1,6 +1,8 @@
 import { Helmet } from "react-helmet";
+
 import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+
 import {
 	Container,
 	Row,
@@ -17,6 +19,8 @@ import "react-image-gallery/styles/css/image-gallery.css";
 import api from "../api";
 import "./ProductDetail.style.css";
 import placeholderImg from "../components/ProductCard/placeholder-image.png";
+
+import { AuthContext } from "../App";
 import ProductCard from "../components/ProductCard/ProductCard";
 import { buildTagQuery } from "./NewsDetail";
 
@@ -32,6 +36,8 @@ const ProductDetail = () => {
 			thumbnail: placeholderImg,
 		},
 	]);
+
+	const { user } = useContext(AuthContext);
 	const [relatedProducts, setRelatedProducts] = useState(null);
 	const navigate = useNavigate();
 
@@ -93,6 +99,10 @@ const ProductDetail = () => {
 	};
 
 	const handleAddCart = async (id, quantity) => {
+		if (!user) {
+			alert("Please log in!");
+			return;
+		}
 		setAddingCart(true);
 
 		try {
