@@ -13,14 +13,19 @@
 	border-top: 1px solid rgba(0, 0, 0, 0.125);
 }
 
-.order-total, .order-btns {
+.order-total {
 	text-align: right;
 }
 
 .total-section {
-  border-top: 1px solid rgba(0, 0, 0, 0.125);
+	border-top: 1px solid rgba(0, 0, 0, 0.125);
 }
 
 .total-price {
-  font-size: 25px;
+	font-size: 25px;
+}
+
+.order-btn {
+	min-width: 100px;
+	float: right;
 }

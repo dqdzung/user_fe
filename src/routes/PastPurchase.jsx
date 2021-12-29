@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet";
 import { useState, useEffect } from "react";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Button, Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import api from "../api";
 import "./PastPurchases.style.css";
@@ -8,13 +8,13 @@ import "./PastPurchases.style.css";
 const PastPurchase = () => {
 	const [orders, setOrders] = useState(null);
 	const [isLoading, setLoading] = useState(true);
+	const [isAddingCart, setAddingCart] = useState(false);
 
 	const fetchPurchases = async () => {
 		try {
 			const res = await api.get("/api/order/user/getOrders");
 
 			if (res.status === 200) {
-				console.log("orders", res.data.orders);
 				setOrders(res.data.orders);
 				setLoading(false);
 			}
@@ -27,6 +27,27 @@ const PastPurchase = () => {
 	useEffect(() => {
 		fetchPurchases();
 	}, []);
+
+	const handleBuyAgain = async (items) => {
+		setAddingCart(true);
+
+		let addedItems = 0;
+		for (let i = 0; i < items.length; i++) {
+			try {
+				const res = await api.post("api/cart", {
+					productId: items[i].productId._id,
+					quantity: items[i].purchaseQty,
+				});
+				if (res.data.success) {
+					addedItems++;
+				}
+			} catch (err) {
+				console.log(err);
+			}
+		}
+		alert(`${addedItems} items added to cart!`);
+		setAddingCart(false);
+	};
 
 	return (
 		<div className="mt-4">
@@ -88,9 +109,27 @@ const PastPurchase = () => {
 													${order.totalAmount}
 												</span>
 											</div>
-											{/* <div className="mt-4 order-btns">
-												<Button variant="warning">Buy Again</Button>
-											</div> */}
+
+											<Button
+												className="mt-4 order-btn"
+												variant="warning"
+												onClick={() => {
+													handleBuyAgain(order.items);
+												}}
+												disabled={isAddingCart}
+											>
+												{isAddingCart ? (
+													<Spinner
+														as="span"
+														animation="border"
+														size="sm"
+														role="status"
+														aria-hidden="true"
+													/>
+												) : (
+													"Buy Again"
+												)}
+											</Button>
 										</Col>
 									</Row>
 								</Col>
