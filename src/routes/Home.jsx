@@ -134,12 +134,15 @@ const Home = () => {
 											}}
 										>
 											<Card.Img variant="top" src={item.avatar} />
-											<Card.Body className="px-4 py-3">
+											<Card.Body className="px-3">
 												<Card.Title>{item.title}</Card.Title>
 											</Card.Body>
-											<span className="px-4 pb-3">
-												{moment(item.createdAt).format("DD/MM/YYYY")}
-											</span>
+											<div className="px-3 pb-3 d-flex justify-content-between">
+												<span>By {item.createdBy.userName}</span>
+												<span>
+													{moment(item.createdAt).format("DD/MM/YYYY, HH:MM")}
+												</span>
+											</div>
 										</Card>
 									</Col>
 								);
