@@ -1,8 +1,7 @@
 import { Helmet } from "react-helmet";
 import { useParams, Link } from "react-router-dom";
 import { Col, Container, Row, Button, Spinner } from "react-bootstrap";
-import { useState, useEffect, useRef } from "react";
-// import { useReactToPrint } from "react-to-print";
+import { useState, useEffect } from "react";
 
 import api from "../../api";
 import "./SuccessPage.style.css";
@@ -11,8 +10,6 @@ const SuccessPage = () => {
 	const { id } = useParams();
 	const [isLoading, setLoading] = useState(true);
 	const [data, setData] = useState(null);
-
-	const componentRef = useRef();
 
 	const fetchOrder = async () => {
 		try {
@@ -32,10 +29,6 @@ const SuccessPage = () => {
 		// eslint-disable-next-line
 	}, []);
 
-	// const handlePrint = useReactToPrint({
-	// 	content: () => componentRef.current,
-	// });
-
 	return (
 		<div className="mt-4">
 			<Helmet>
@@ -49,7 +42,7 @@ const SuccessPage = () => {
 					</div>
 				)}
 				{!isLoading && (
-					<div className="my-3" ref={componentRef}>
+					<div className="my-3">
 						<h2 className="text-center">
 							Thank you for your purchase from Voucher Shop!
 						</h2>
