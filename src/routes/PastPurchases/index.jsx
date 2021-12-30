@@ -2,7 +2,7 @@ import { Helmet } from "react-helmet";
 import { useState, useEffect } from "react";
 import { Row, Col, Button, Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import api from "../api";
+import api from "../../api";
 import "./PastPurchases.style.css";
 
 const PastPurchase = () => {

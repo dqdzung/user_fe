@@ -4,7 +4,7 @@ import { Col, Container, Row, Button, Spinner } from "react-bootstrap";
 import { useState, useEffect, useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 
-import api from "../api";
+import api from "../../api";
 import "./SuccessPage.style.css";
 
 const SuccessPage = () => {

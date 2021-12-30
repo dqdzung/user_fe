@@ -3,9 +3,9 @@ import { Helmet } from "react-helmet";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { Container, Badge } from "react-bootstrap";
 import moment from "moment";
-import api from "../api";
+import api from "../../api";
 import "./NewsDetail.style.css";
-import { NewsCard } from "./News";
+import { NewsCard } from "../News";
 
 export const buildTagQuery = (array) => {
 	let queryString = "";
@@ -106,7 +106,9 @@ const NewsDetail = () => {
 										);
 									})}
 						</section>
-            <p className="text-center"><Link to="/news">See more</Link></p>
+						<p className="text-center">
+							<Link to="/news">See more</Link>
+						</p>
 					</section>
 				)}
 			</Container>

@@ -9,7 +9,7 @@ import {
 	useStripe,
 } from "@stripe/react-stripe-js";
 
-import api from "../api";
+import api from "../../api";
 import "./CartPage.style.css";
 
 const CARD_ELEMENT_OPTIONS = {

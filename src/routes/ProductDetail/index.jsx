@@ -16,13 +16,13 @@ import {
 
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
-import api from "../api";
+import api from "../../api";
 import "./ProductDetail.style.css";
-import placeholderImg from "../components/ProductCard/placeholder-image.png";
+import placeholderImg from "../../components/ProductCard/placeholder-image.png";
 
-import { AuthContext } from "../App";
-import ProductCard from "../components/ProductCard/ProductCard";
-import { buildTagQuery } from "./NewsDetail";
+import { AuthContext } from "../../App";
+import ProductCard from "../../components/ProductCard/ProductCard";
+import { buildTagQuery } from "../NewsDetail";
 
 const ProductDetail = () => {
 	const { id } = useParams();

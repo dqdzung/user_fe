@@ -17,9 +17,9 @@ import {
 import { useSearchParams, useLocation } from "react-router-dom";
 import { debounce } from "debounce";
 
-import api from "../api";
-import placeholderImg from "../components/ProductCard/placeholder-image.png";
-import ProductCard from "../components/ProductCard/ProductCard";
+import api from "../../api";
+import placeholderImg from "../../components/ProductCard/placeholder-image.png";
+import ProductCard from "../../components/ProductCard/ProductCard";
 import "./Product.style.css";
 
 const PriceFilter = ({ min, max, handleSubmit }) => {

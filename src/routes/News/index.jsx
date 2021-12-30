@@ -4,8 +4,8 @@ import { useSearchParams, Link, useLocation } from "react-router-dom";
 import { Container, Row, Col, Badge, CloseButton } from "react-bootstrap";
 import moment from "moment";
 
-import { PaginationComp } from "./Products";
-import api from "../api";
+import { PaginationComp } from "../Products/Products";
+import api from "../../api";
 import "./News.style.css";
 
 export const NewsCard = ({ article, onClickTag }) => {
@@ -127,7 +127,7 @@ const News = () => {
 			</Helmet>
 			<Container>
 				{isLoading ? (
-					<h2>Loading News...</h2>
+					<h2 className="mb-4">Loading News...</h2>
 				) : (
 					<>
 						<h1>News</h1>
