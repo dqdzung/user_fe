@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Carousel, Container, Card, Row, Col, Spinner } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import ProductCard from "../../components/ProductCard/ProductCard";
+import ProductCard from "../../components/ProductCard";
 import moment from "moment";
 import "./Home.style.css";
 import api from "../../api";

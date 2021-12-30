@@ -19,7 +19,7 @@ import { debounce } from "debounce";
 
 import api from "../../api";
 import placeholderImg from "../../components/ProductCard/placeholder-image.png";
-import ProductCard from "../../components/ProductCard/ProductCard";
+import ProductCard from "../../components/ProductCard";
 import "./Product.style.css";
 
 const PriceFilter = ({ min, max, handleSubmit }) => {

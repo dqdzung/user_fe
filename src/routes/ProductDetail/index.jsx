@@ -21,7 +21,7 @@ import "./ProductDetail.style.css";
 import placeholderImg from "../../components/ProductCard/placeholder-image.png";
 
 import { AuthContext } from "../../App";
-import ProductCard from "../../components/ProductCard/ProductCard";
+import ProductCard from "../../components/ProductCard";
 import { buildTagQuery } from "../NewsDetail";
 
 const ProductDetail = () => {
