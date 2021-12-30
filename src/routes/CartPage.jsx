@@ -87,6 +87,7 @@ const PaymentForm = ({ cart, disabled }) => {
 			}
 		} catch (err) {
 			console.log(err);
+		} finally {
 			setDisabled(false);
 		}
 	};
@@ -139,8 +140,9 @@ const CartPage = ({ stripePromise }) => {
 				setLoading(false);
 			}
 		} catch (err) {
-			setLoading(false);
 			console.log(err);
+		} finally {
+			setLoading(false);
 		}
 	};
 

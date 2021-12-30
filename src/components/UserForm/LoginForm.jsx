@@ -23,7 +23,7 @@ const validate = (values) => {
 
 const LoginForm = ({ close, clickLinkEvent }) => {
 	const { setUser } = useContext(AuthContext);
-  const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(false);
 
 	const formik = useFormik({
 		initialValues: {
@@ -32,7 +32,7 @@ const LoginForm = ({ close, clickLinkEvent }) => {
 		},
 		validate,
 		onSubmit: async (values) => {
-      setLoading(true);
+			setLoading(true);
 			const { email, password } = values;
 
 			try {
@@ -43,16 +43,17 @@ const LoginForm = ({ close, clickLinkEvent }) => {
 				});
 
 				if (res.status === 200) {
-          setLoading(false)
+					setLoading(false);
 					const { user, token } = res.data;
 					localStorage.setItem("token", token);
 					setUser(user);
 					close();
 				}
 			} catch (err) {
-        setLoading(false);
 				console.log(err);
 				alert("Wrong email or Password");
+			} finally {
+				setLoading(false);
 			}
 		},
 	});

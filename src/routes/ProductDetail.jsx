@@ -53,6 +53,8 @@ const ProductDetail = () => {
 			}
 		} catch (err) {
 			console.log(err);
+		} finally {
+			setLoading(false);
 		}
 	};
 
@@ -88,6 +90,8 @@ const ProductDetail = () => {
 			}
 		} catch (err) {
 			console.log(err);
+		} finally {
+			setLoading(false);
 		}
 	};
 

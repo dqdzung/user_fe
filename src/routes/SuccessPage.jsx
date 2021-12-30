@@ -25,6 +25,7 @@ const SuccessPage = () => {
 			setLoading(false);
 		} catch (err) {
 			console.log(err);
+		} finally {
 			setLoading(false);
 		}
 	};

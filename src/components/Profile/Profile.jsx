@@ -63,8 +63,9 @@ const Profile = () => {
 					alert("User info updated!");
 				}
 			} catch (err) {
-				setLoading(false);
 				console.log(err);
+			} finally {
+				setLoading(false);
 			}
 		},
 	});
@@ -83,8 +84,9 @@ const Profile = () => {
 				setUrl(res.data.data);
 			}
 		} catch (err) {
-			setLoading(false);
 			console.log(err);
+		} finally {
+			setLoading(false);
 		}
 	};
 

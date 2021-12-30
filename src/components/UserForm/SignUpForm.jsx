@@ -67,8 +67,9 @@ const SignUpForm = ({ close, clickLinkEvent }) => {
 					close();
 				}
 			} catch (err) {
-				setLoading(false);
 				console.log(err);
+			} finally {
+				setLoading(false);
 				close();
 			}
 		},
