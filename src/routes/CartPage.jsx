@@ -135,7 +135,6 @@ const CartPage = ({ stripePromise }) => {
 			const res = await api.get("api/cart");
 
 			if (res.data.success) {
-				// console.log("cart", res.data.data);
 				setCart(res.data.data);
 				setLoading(false);
 			}

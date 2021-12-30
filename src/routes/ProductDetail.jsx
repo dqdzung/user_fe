@@ -1,6 +1,8 @@
 import { Helmet } from "react-helmet";
-import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+
+import { useParams, useNavigate } from "react-router-dom";
+import { useEffect, useState, useContext } from "react";
+
 import {
 	Container,
 	Row,
@@ -18,6 +20,10 @@ import api from "../api";
 import "./ProductDetail.style.css";
 import placeholderImg from "../components/ProductCard/placeholder-image.png";
 
+import { AuthContext } from "../App";
+import ProductCard from "../components/ProductCard/ProductCard";
+import { buildTagQuery } from "./NewsDetail";
+
 const ProductDetail = () => {
 	const { id } = useParams();
 	const [data, setData] = useState({});
@@ -30,6 +36,10 @@ const ProductDetail = () => {
 			thumbnail: placeholderImg,
 		},
 	]);
+
+	const { user } = useContext(AuthContext);
+	const [relatedProducts, setRelatedProducts] = useState(null);
+	const navigate = useNavigate();
 
 	const fetchProduct = async (id) => {
 		try {
@@ -50,6 +60,22 @@ const ProductDetail = () => {
 
 				setImages(imageData);
 				setLoading(false);
+				// console.log("tags", res.data.product.tags);
+				await fetchRelatedProducts(res.data.product.tags);
+			}
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	const fetchRelatedProducts = async (tagArray) => {
+		const tagQuery = buildTagQuery(tagArray);
+		const url = `api/product?page=1&perPage=4${tagQuery}`;
+		console.log("url", url);
+		try {
+			const res = await api.get(url);
+			if (res.status === 200) {
+				setRelatedProducts(res.data.docs);
 			}
 		} catch (err) {
 			console.log(err);
@@ -75,6 +101,10 @@ const ProductDetail = () => {
 	};
 
 	const handleAddCart = async (id, quantity) => {
+		if (!user) {
+			alert("Please log in!");
+			return;
+		}
 		setAddingCart(true);
 
 		try {
@@ -96,7 +126,7 @@ const ProductDetail = () => {
 	};
 
 	const handleClickTag = (tag) => {
-		console.log("clicked", tag);
+		navigate(`/products?tag=${tag}`);
 	};
 
 	return (
@@ -241,6 +271,24 @@ const ProductDetail = () => {
 							data.description
 						)}
 					</p>
+				</section>
+				<section>
+					<h3>Related products</h3>
+					{relatedProducts && (
+						<Row>
+							{relatedProducts
+								.filter((item) => item._id !== data._id)
+								.map((item) => {
+									return (
+										<ProductCard
+											data={item}
+											onClickTag={handleClickTag}
+											key={item._id}
+										/>
+									);
+								})}
+						</Row>
+					)}
 				</section>
 			</Container>
 		</div>

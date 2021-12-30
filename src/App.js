@@ -9,13 +9,14 @@ import News from "./routes/News";
 import About from "./routes/About";
 import UserPage from "./routes/UserPage";
 import Profile from "./components/Profile/Profile.jsx";
-import PastPurchase from "./components/PastPurchase.jsx";
+import PastPurchase from "./routes/PastPurchase.jsx";
 import NoMatch from "./routes/NoMatch";
 import Footer from "./components/Footer/Footer.jsx";
 import Contact from "./routes/Contact";
 import ProductDetail from "./routes/ProductDetail";
 import CartPage from "./routes/CartPage";
 import SuccessPage from "./routes/SuccessPage";
+import NewsDetail from "./routes/NewsDetail";
 import api from "./api";
 import { loadStripe } from "@stripe/stripe-js";
 
@@ -75,7 +76,11 @@ function App() {
 							path="/cart"
 							element={<CartPage stripePromise={stripePromise} />}
 						></Route>
-						<Route path="/payment-success/:id" element={<SuccessPage />}></Route>
+						<Route
+							path="/payment-success/:id"
+							element={<SuccessPage />}
+						></Route>
+						<Route path="/news/:id" element={<NewsDetail />}></Route>
 						<Route path="*" element={<NoMatch />}></Route>
 					</Routes>
 					<Footer />

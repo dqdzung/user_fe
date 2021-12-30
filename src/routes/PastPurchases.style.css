@@ -1,0 +1,31 @@
+.order-card {
+	border: 1px solid rgba(0, 0, 0, 0.125);
+	border-radius: 5px;
+}
+
+.order-item img {
+	width: 80px;
+	height: 80px;
+	object-fit: cover;
+}
+
+.order-item {
+	border-top: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.order-total {
+	text-align: right;
+}
+
+.total-section {
+	border-top: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.total-price {
+	font-size: 25px;
+}
+
+.order-btn {
+	min-width: 100px;
+	float: right;
+}
