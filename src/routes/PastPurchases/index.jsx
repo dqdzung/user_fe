@@ -12,7 +12,7 @@ const PastPurchase = () => {
 
 	const fetchPurchases = async () => {
 		try {
-			const res = await api.get("/api/order/user/getOrders");
+			const res = await api.get("/api/order/user/getOrders?page=1&perPage=10");
 
 			if (res.status === 200) {
 				setOrders(res.data.orders);

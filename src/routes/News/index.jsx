@@ -14,6 +14,7 @@ export const NewsCard = ({ article, onClickTag }) => {
 			<Row>
 				<Col
 					xs={12}
+					md={5}
 					lg={4}
 					className="d-flex align-items-center justify-content-center"
 				>
@@ -21,7 +22,7 @@ export const NewsCard = ({ article, onClickTag }) => {
 						<img src={article.avatar} alt="news-avatar" />
 					</Link>
 				</Col>
-				<Col xs={12} lg={8}>
+				<Col xs={12} md={7} lg={8}>
 					<Link
 						to={`/news/${article._id}`}
 						className="text-decoration-none text-black"

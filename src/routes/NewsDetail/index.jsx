@@ -66,13 +66,13 @@ const NewsDetail = () => {
 				<title>Voucher Shop - News</title>
 			</Helmet>
 			<Container>
-				{isLoading && <h2>Loading Article...</h2>}
+				{isLoading && <h2 className="mb-3">Loading Article...</h2>}
 				{news && (
 					<section className="news-detail">
 						<h1>{news.title}</h1>
 						<p>{moment(news.createdAt).format("DD/MM/YYYY, HH:MM (UTC+7)")}</p>
 						<div dangerouslySetInnerHTML={{ __html: news.post }}></div>
-						<h5 className="author">By {news.createdBy}</h5>
+						<h5 className="author">By {news.createdBy.userName}</h5>
 						<div className="mb-4">
 							<span>Tag: </span>
 							{news.tags.map((tag) => {
