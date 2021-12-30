@@ -183,7 +183,7 @@ const CartPage = ({ stripePromise }) => {
 	};
 
 	return (
-		<div className="mt-4">
+		<div className="my-4">
 			<Elements stripe={stripePromise}>
 				<Helmet>
 					<title>Voucher Shop - Cart</title>

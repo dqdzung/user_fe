@@ -60,7 +60,6 @@ const ProductDetail = () => {
 
 				setImages(imageData);
 				setLoading(false);
-				// console.log("tags", res.data.product.tags);
 				await fetchRelatedProducts(res.data.product.tags);
 			}
 		} catch (err) {

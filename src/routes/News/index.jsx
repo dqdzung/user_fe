@@ -94,6 +94,7 @@ const News = () => {
 			}
 		} catch (err) {
 			console.log(err);
+		} finally {
 			setLoading(false);
 		}
 	};
@@ -152,7 +153,7 @@ const News = () => {
 								);
 							})}
 						</Row>
-						<div className="d-flex justify-content-center">
+						<div className="d-flex justify-content-center my-2">
 							<PaginationComp
 								total={totalPage}
 								current={currentPage}

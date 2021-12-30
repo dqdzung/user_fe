@@ -30,7 +30,7 @@ const SuccessPage = () => {
 	}, []);
 
 	return (
-		<div className="mt-4">
+		<div className="my-4">
 			<Helmet>
 				<title>Voucher Shop - Success</title>
 			</Helmet>
@@ -50,7 +50,7 @@ const SuccessPage = () => {
 							<h4 className="text-center">Your order No. {id}</h4>
 							<Row className="p-3">
 								{data.items.map((item) => (
-									<Col xs={12}>
+									<Col xs={12} key={item._id}>
 										<Row className="text-center">
 											<Col>{item.productId.name}</Col>
 											<Col>x{item.purchaseQty}</Col>

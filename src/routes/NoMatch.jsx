@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const NoMatch = () => {
 	return (
-		<div className="mt-4">
+		<div className="my-4">
 			<Helmet>
 				<title>Voucher Shop - 404</title>
 			</Helmet>

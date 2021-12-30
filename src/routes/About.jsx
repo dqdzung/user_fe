@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet";
 const AboutUs = () => {
 	return (
 		<Container>
-			<div className="mt-4">
+			<div className="my-4">
 				<Helmet>
 					<title>Voucher Shop - About Us</title>
 				</Helmet>
