@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { Card, Col, Button, Spinner, Badge } from "react-bootstrap";
+import { Card, Button, Spinner, Badge } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import api from "../../api";
 
@@ -37,7 +37,7 @@ const ProductCard = ({ data, onClickTag }) => {
 	};
 
 	return (
-		<Col xs={12} lg={6} className="p-4">
+		// <Col xs={12} lg={6} className="p-4">
 			<Card>
 				<Link
 					to={`/products/${_id}`}
@@ -93,7 +93,7 @@ const ProductCard = ({ data, onClickTag }) => {
 					</div>
 				</Card.Body>
 			</Card>
-		</Col>
+		// </Col>
 	);
 };
 

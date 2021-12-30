@@ -71,7 +71,6 @@ const ProductDetail = () => {
 	const fetchRelatedProducts = async (tagArray) => {
 		const tagQuery = buildTagQuery(tagArray);
 		const url = `api/product?page=1&perPage=4${tagQuery}`;
-		console.log("url", url);
 		try {
 			const res = await api.get(url);
 			if (res.status === 200) {
@@ -272,19 +271,22 @@ const ProductDetail = () => {
 						)}
 					</p>
 				</section>
-				<section>
+        <hr className="mt-5"/>
+				<section className="mb-3">
 					<h3>Related products</h3>
 					{relatedProducts && (
-						<Row>
+						<Row className="g-3">
 							{relatedProducts
 								.filter((item) => item._id !== data._id)
 								.map((item) => {
 									return (
-										<ProductCard
-											data={item}
-											onClickTag={handleClickTag}
-											key={item._id}
-										/>
+										<Col xs={12} lg={6} xl={4}>
+											<ProductCard
+												data={item}
+												onClickTag={handleClickTag}
+												key={item._id}
+											/>
+										</Col>
 									);
 								})}
 						</Row>

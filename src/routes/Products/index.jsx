@@ -204,7 +204,7 @@ const Products = () => {
 	};
 
 	const PlaceholderCard = () => (
-		<Col xs={12} lg={6} className="p-4">
+		<Col xs={12} lg={6}>
 			<Card>
 				<Card.Img variant="top" src={placeholderImg} />
 				<Card.Body>
@@ -214,7 +214,6 @@ const Products = () => {
 					<hr />
 					<Placeholder as={Card.Text} animation="glow">
 						<Placeholder xs={7} /> <Placeholder xs={4} />
-						<Placeholder xs={8} />
 					</Placeholder>
 					<Row>
 						<Col>
@@ -241,7 +240,9 @@ const Products = () => {
 		}
 
 		return items.map((item) => (
-			<ProductCard key={item._id} data={item} onClickTag={onClickTag} />
+			<Col xs={12} xl={6}>
+				<ProductCard key={item._id} data={item} onClickTag={onClickTag} />
+			</Col>
 		));
 	};
 
@@ -276,7 +277,7 @@ const Products = () => {
 							/>
 						)}
 					</div>
-					<Row className="product-list">
+					<Row className="mt-2 mb-3 px-3 g-4 product-list">
 						{isLoading ? (
 							<>
 								<PlaceholderCard />
@@ -288,7 +289,7 @@ const Products = () => {
 					</Row>
 					{/* Pagination */}
 					{products.length ? (
-						<div className="d-flex justify-content-center">
+						<div className="d-flex justify-content-center mt-4">
 							<PaginationComp
 								total={totalPage}
 								current={currentPage}
