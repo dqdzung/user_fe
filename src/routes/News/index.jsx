@@ -4,7 +4,7 @@ import { useSearchParams, Link, useLocation } from "react-router-dom";
 import { Container, Row, Col, Badge, CloseButton } from "react-bootstrap";
 import moment from "moment";
 
-import { PaginationComp } from "../Products/Products";
+import { PaginationComp } from "../Products";
 import api from "../../api";
 import "./News.style.css";
 
