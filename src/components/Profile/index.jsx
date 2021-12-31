@@ -44,12 +44,14 @@ const Profile = () => {
 			lastName: user ? user.lastName : "",
 			dob: user ? formatDate(user.dob) : "",
 			phone: user ? user.phone : "",
+			subscription: (user && user.subscription) || true,
 		},
 		enableReinitialize: true,
 		onSubmit: async (values) => {
 			setLoading(true);
 
 			const data = { password: newPassword, profilePicture: imgUrl, ...values };
+
 			try {
 				const res = await api({
 					url: "api/user/update",
@@ -96,7 +98,7 @@ const Profile = () => {
 				<title>Voucher Shop - Profile</title>
 			</Helmet>
 			<Form
-				className="shadow py-2 px-5 my-2 bg-white rounded"
+				className="shadow py-2 px-5 my-4 bg-white rounded"
 				onSubmit={formik.handleSubmit}
 			>
 				<div className="d-flex mt-3 flex-column align-items-center justify-content-center">
@@ -202,6 +204,16 @@ const Profile = () => {
 							value={formik.values.phone}
 						/>
 					</Col>
+				</Form.Group>
+				<Form.Group className="mt-4 d-flex justify-content-center" controlId="formBasicCheckbox">
+					<Form.Check
+						type="checkbox"
+						label="Subscribe to our newsletter"
+						checked={formik.values.subscription}
+						onChange={(e) =>
+							formik.setFieldValue(formik.values.subscription, e.target.checked)
+						}
+					/>
 				</Form.Group>
 				<div className="d-flex justify-content-center py-4">
 					<Button
