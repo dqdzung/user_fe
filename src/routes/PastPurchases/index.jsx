@@ -9,7 +9,7 @@ import { PaginationComp } from "../Products";
 const PastPurchase = () => {
 	const [orders, setOrders] = useState(null);
 	const [isLoading, setLoading] = useState(true);
-	const [isAddingCart, setAddingCart] = useState(false);
+	const [isFetching, setIsFetching] = useState(false);
 	const [searchParams, setSearchParams] = useSearchParams();
 	const [totalPage, setTotalPage] = useState(0);
 	const [currentPage, setCurrentPage] = useState(searchParams.get("page") || 1);
@@ -48,7 +48,7 @@ const PastPurchase = () => {
 	}, [location]);
 
 	const handleBuyAgain = async (items) => {
-		setAddingCart(true);
+		setIsFetching(true);
 
 		let addedItems = 0;
 		for (let i = 0; i < items.length; i++) {
@@ -65,7 +65,25 @@ const PastPurchase = () => {
 			}
 		}
 		alert(`${addedItems} items added to cart!`);
-		setAddingCart(false);
+		setIsFetching(false);
+	};
+
+	const handleRefund = async (paymentIntentId, orderId) => {
+		setIsFetching(true);
+		try {
+			const res = await api.post("/api/stripe/refund", {
+				paymentIntentId,
+				orderId,
+			});
+
+			if (res.data.success) {
+				console.log("refunded", res.data.data);
+			}
+		} catch (err) {
+			console.log(err);
+		} finally {
+			setIsFetching(false);
+		}
 	};
 
 	const handlePageChange = (number) => {
@@ -83,7 +101,7 @@ const PastPurchase = () => {
 				<h2 className="text-center">Loading Past Purchases...</h2>
 			) : (
 				<>
-					{!orders ? (
+					{!orders.length ? (
 						<h2>
 							No purchases, please go <Link to="/products">buy something</Link>
 						</h2>
@@ -96,7 +114,12 @@ const PastPurchase = () => {
 										className="shadow-sm p-3 order-card"
 										key={order._id}
 									>
-										<span>Order ID: {order._id}</span>
+										<div className="d-flex justify-content-between">
+											<span>Order ID: {order._id}</span>
+											<b className="text-danger text-uppercase">
+												{order.status}
+											</b>
+										</div>
 										<Row className="gx-2">
 											{order.items.map((item) => (
 												<Col
@@ -133,22 +156,20 @@ const PastPurchase = () => {
 											<hr className="text-muted" />
 											<Col xs={12}>
 												<div className="d-flex align-items-center order-total justify-content-end">
-													<span className="mx-3">
-														Order Total:
-													</span>
+													<span className="mx-3">Order Total:</span>
 													<span className="total-price price">
 														${order.totalAmount}
 													</span>
 												</div>
 												<Button
-													className="mt-4 order-btn"
+													className="mt-4 order-btn mx-1"
 													variant="warning"
 													onClick={() => {
 														handleBuyAgain(order.items);
 													}}
-													disabled={isAddingCart}
+													disabled={isFetching}
 												>
-													{isAddingCart ? (
+													{isFetching ? (
 														<Spinner
 															as="span"
 															animation="border"
@@ -160,6 +181,28 @@ const PastPurchase = () => {
 														"Buy Again"
 													)}
 												</Button>
+												{order.status === "order" && (
+													<Button
+														className="mt-4 order-btn mx-1"
+														variant="danger"
+														onClick={() => {
+															handleRefund(order.paymentIntentId, order._id);
+														}}
+														disabled={isFetching}
+													>
+														{isFetching ? (
+															<Spinner
+																as="span"
+																animation="border"
+																size="sm"
+																role="status"
+																aria-hidden="true"
+															/>
+														) : (
+															"Refund"
+														)}
+													</Button>
+												)}
 											</Col>
 										</Row>
 									</Col>

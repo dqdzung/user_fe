@@ -79,6 +79,7 @@ const PaymentForm = ({ cart, disabled }) => {
 						}),
 						paymentStatus: "completed",
 						paymentType: "card",
+						paymentIntentId: paymentIntent.id,
 					};
 
 					const res = await api.post("api/order/user/addOrder", payload);
@@ -255,7 +256,7 @@ const CartPage = ({ stripePromise }) => {
 														<div className="d-flex justify-content-center px-3 quantity-form">
 															<input
 																type="button"
-																value="-"
+																defaultValue="-"
 																onClick={(e) => {
 																	handleQuantityChange(
 																		e,
@@ -265,10 +266,13 @@ const CartPage = ({ stripePromise }) => {
 																}}
 																disabled={isLoading}
 															/>
-															<input type="number" value={product.quantity} />
+															<input
+																type="number"
+																defaultValue={product.quantity}
+															/>
 															<input
 																type="button"
-																value="+"
+																defaultValue="+"
 																onClick={(e) => {
 																	handleQuantityChange(
 																		e,
