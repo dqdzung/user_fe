@@ -116,7 +116,13 @@ const PastPurchase = () => {
 									>
 										<div className="d-flex justify-content-between">
 											<span>Order ID: {order._id}</span>
-											<b className="text-danger text-uppercase">
+											<b
+												className={`${
+													order.status === "cancelled"
+														? "text-danger"
+														: "text-success"
+												} text-uppercase`}
+											>
 												{order.status}
 											</b>
 										</div>
@@ -181,7 +187,7 @@ const PastPurchase = () => {
 														"Buy Again"
 													)}
 												</Button>
-												{order.status === "order" && (
+												{order.status === "ordered" && (
 													<Button
 														className="mt-4 order-btn mx-1"
 														variant="danger"
