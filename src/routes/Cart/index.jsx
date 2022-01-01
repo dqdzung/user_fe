@@ -256,7 +256,7 @@ const CartPage = ({ stripePromise }) => {
 														<div className="d-flex justify-content-center px-3 quantity-form">
 															<input
 																type="button"
-																defaultValue="-"
+																value="-"
 																onClick={(e) => {
 																	handleQuantityChange(
 																		e,
@@ -266,13 +266,10 @@ const CartPage = ({ stripePromise }) => {
 																}}
 																disabled={isLoading}
 															/>
-															<input
-																type="number"
-																defaultValue={product.quantity}
-															/>
+															<input type="number" value={product.quantity} />
 															<input
 																type="button"
-																defaultValue="+"
+																value="+"
 																onClick={(e) => {
 																	handleQuantityChange(
 																		e,

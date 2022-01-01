@@ -73,11 +73,14 @@ const PastPurchase = () => {
 		try {
 			const res = await api.post("/api/stripe/refund", {
 				paymentIntentId,
-				orderId,
 			});
 
 			if (res.data.success) {
-				console.log("refunded", res.data.data);
+				await api.put("/api/order/user/cancelOrder", {
+					orderId,
+				});
+        alert("Successfully cancel order!")
+				await fetchPurchases();
 			}
 		} catch (err) {
 			console.log(err);
@@ -101,7 +104,7 @@ const PastPurchase = () => {
 				<h2 className="text-center">Loading Past Purchases...</h2>
 			) : (
 				<>
-					{!orders.length ? (
+					{!orders && !orders.length ? (
 						<h2>
 							No purchases, please go <Link to="/products">buy something</Link>
 						</h2>
@@ -205,7 +208,7 @@ const PastPurchase = () => {
 																aria-hidden="true"
 															/>
 														) : (
-															"Refund"
+															"Cancel"
 														)}
 													</Button>
 												)}

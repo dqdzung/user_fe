@@ -44,7 +44,7 @@ const Profile = () => {
 			lastName: user ? user.lastName : "",
 			dob: user ? formatDate(user.dob) : "",
 			phone: user ? user.phone : "",
-			subscription: (user && user.subscription) || true,
+			receivedEmail: (user && user.subscription) || true,
 		},
 		enableReinitialize: true,
 		onSubmit: async (values) => {
@@ -205,13 +205,19 @@ const Profile = () => {
 						/>
 					</Col>
 				</Form.Group>
-				<Form.Group className="mt-4 d-flex justify-content-center" controlId="formBasicCheckbox">
+				<Form.Group
+					className="mt-4 d-flex justify-content-center"
+					controlId="formBasicCheckbox"
+				>
 					<Form.Check
 						type="checkbox"
 						label="Subscribe to our newsletter"
-						checked={formik.values.subscription}
+						checked={formik.values.receivedEmail}
 						onChange={(e) =>
-							formik.setFieldValue(formik.values.subscription, e.target.checked)
+							formik.setFieldValue(
+								formik.values.receivedEmail,
+								e.target.checked
+							)
 						}
 					/>
 				</Form.Group>
