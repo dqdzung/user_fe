@@ -44,7 +44,7 @@ const Profile = () => {
 			lastName: user ? user.lastName : "",
 			dob: user ? formatDate(user.dob) : "",
 			phone: user ? user.phone : "",
-			receivedEmail: (user && user.subscription) || true,
+			receivedEmail: user && user.receivedEmail,
 		},
 		enableReinitialize: true,
 		onSubmit: async (values) => {
@@ -90,6 +90,10 @@ const Profile = () => {
 		} finally {
 			setLoading(false);
 		}
+	};
+
+	const handleCheck = (e) => {
+		formik.setFieldValue("receivedEmail", e.target.checked);
 	};
 
 	return (
@@ -213,12 +217,7 @@ const Profile = () => {
 						type="checkbox"
 						label="Subscribe to our newsletter"
 						checked={formik.values.receivedEmail}
-						onChange={(e) =>
-							formik.setFieldValue(
-								formik.values.receivedEmail,
-								e.target.checked
-							)
-						}
+						onChange={handleCheck}
 					/>
 				</Form.Group>
 				<div className="d-flex justify-content-center py-4">
