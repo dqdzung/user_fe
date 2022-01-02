@@ -8,6 +8,7 @@ import { AuthContext } from "../../App";
 import PasswordModal from "../Modals/PasswordModal";
 import api from "../../api";
 import "./Profile.style.css";
+import { toast } from "react-toastify";
 
 const Profile = () => {
 	const { user, setUser } = useContext(AuthContext);
@@ -62,7 +63,7 @@ const Profile = () => {
 				if (res.data.success) {
 					setLoading(false);
 					setUser(res.data.data);
-					alert("User info updated!");
+					toast.success("User info updated!");
 				}
 			} catch (err) {
 				console.log(err);

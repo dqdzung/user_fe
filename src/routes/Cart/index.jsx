@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { Container, Row, Col, Button, Spinner, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import {
 	Elements,
 	CardElement,
@@ -59,13 +60,13 @@ const PaymentForm = ({ cart, disabled }) => {
 
 				if (stripeError) {
 					setDisabled(false);
-					alert(stripeError.message);
+					toast.warn(stripeError.message);
 					return;
 				}
 
 				if (paymentIntent.status === "succeeded") {
-					alert("Payment succeeded!");
-					setDisabled(false);
+					toast.success("Payment succeeded!");
+					// setDisabled(false);
 
 					//call order/invoice api here and show success page
 					const payload = {

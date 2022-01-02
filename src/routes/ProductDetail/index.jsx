@@ -23,6 +23,7 @@ import placeholderImg from "../../components/ProductCard/placeholder-image.png";
 import { AuthContext } from "../../App";
 import ProductCard from "../../components/ProductCard";
 import { buildTagQuery } from "../NewsDetail";
+import { toast } from "react-toastify";
 
 const ProductDetail = () => {
 	const { id } = useParams();
@@ -100,7 +101,7 @@ const ProductDetail = () => {
 
 	const handleAddCart = async (id, quantity) => {
 		if (!user) {
-			alert("Please log in!");
+			toast.error("Please log in!");
 			return;
 		}
 		setAddingCart(true);
@@ -114,7 +115,7 @@ const ProductDetail = () => {
 			if (res.data.success) {
 				setAddingCart(false);
 				setQuantity(1);
-				alert("Item added to cart!"); // To be replaced by a toast notification
+				toast.success("Item added to cart!");
 			}
 		} catch (err) {
 			console.log(err);
@@ -270,7 +271,7 @@ const ProductDetail = () => {
 						)}
 					</p>
 				</section>
-        <hr className="mt-5"/>
+				<hr className="mt-5" />
 				<section className="mb-3">
 					<h3>Related products</h3>
 					{relatedProducts && (

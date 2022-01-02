@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useFormik } from "formik";
 import api from "../../api";
 import "./UserForm.style.css";
+import { toast } from "react-toastify";
 
 const validate = (values) => {
 	const errors = {};
@@ -63,7 +64,8 @@ const SignUpForm = ({ close, clickLinkEvent }) => {
 
 				if (res.status === 200) {
 					setLoading(false);
-					alert("Registration success!");
+					toast.success("Registration success!");
+
 					close();
 				}
 			} catch (err) {
