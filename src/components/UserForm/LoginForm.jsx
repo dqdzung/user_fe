@@ -4,6 +4,7 @@ import { useFormik } from "formik";
 import { AuthContext } from "../../App";
 import api from "../../api";
 import "./UserForm.style.css";
+import { toast } from "react-toastify";
 
 const validate = (values) => {
 	const errors = {};
@@ -51,7 +52,7 @@ const LoginForm = ({ close, clickLinkEvent }) => {
 				}
 			} catch (err) {
 				console.log(err);
-				alert("Wrong email or Password");
+				toast.warn("Wrong Email or Password");
 			} finally {
 				setLoading(false);
 			}

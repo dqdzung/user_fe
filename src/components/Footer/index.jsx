@@ -20,7 +20,7 @@ const Footer = () => {
 					</div>
 				</Container>
 			</section> */}
-			<section className="py-3 bg-primary text-light info-section">
+			<section className="py-3 bg-primary text-light footer">
 				<Container>
 					<Row>
 						<Col className="mb-2" xs={12} md={4}>

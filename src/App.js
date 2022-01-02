@@ -19,6 +19,8 @@ import SuccessPage from "./routes/SuccessPage";
 import NewsDetail from "./routes/NewsDetail";
 import api from "./api";
 import { loadStripe } from "@stripe/stripe-js";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const stripePromise = loadStripe(
 	"pk_test_51K2XQmG4O6UAM7MpJnpzEUcBVJV1jlDxMaI6uNw7eCWrl5XEsOdudWZ7kkzAboMzDsUoh7RxOuYKnu5LF8BzbEMw004e6JvTUu"
@@ -60,29 +62,42 @@ function App() {
 			<AuthContext.Provider value={{ user, setUser }}>
 				<BrowserRouter>
 					<MainNav />
-					<Routes>
-						<Route path="/" element={<Home />}></Route>
-						<Route path="/products" element={<Products />}></Route>
-						<Route path="/news" element={<News />}></Route>
-						<Route path="/about" element={<About />}></Route>
-						<ProtectedRoute path="/user" element={<UserPage />}>
-							<Route path="/user" element={<Navigate to="me" />} />
-							<Route path="me" element={<Profile />} />
-							<Route path="purchase" element={<PastPurchase />} />
-						</ProtectedRoute>
-						<Route path="/contact" element={<Contact />}></Route>
-						<Route path="/products/:id" element={<ProductDetail />}></Route>
-						<Route
-							path="/cart"
-							element={<CartPage stripePromise={stripePromise} />}
-						></Route>
-						<Route
-							path="/payment-success/:id"
-							element={<SuccessPage />}
-						></Route>
-						<Route path="/news/:id" element={<NewsDetail />}></Route>
-						<Route path="*" element={<NoMatch />}></Route>
-					</Routes>
+					<div className="main-content">
+						<Routes>
+							<Route path="/" element={<Home />}></Route>
+							<Route path="/products" element={<Products />}></Route>
+							<Route path="/news" element={<News />}></Route>
+							<Route path="/about" element={<About />}></Route>
+							<ProtectedRoute path="/user" element={<UserPage />}>
+								<Route path="/user" element={<Navigate to="me" />} />
+								<Route path="me" element={<Profile />} />
+								<Route path="purchase" element={<PastPurchase />} />
+							</ProtectedRoute>
+							<Route path="/contact" element={<Contact />}></Route>
+							<Route path="/products/:id" element={<ProductDetail />}></Route>
+							<Route
+								path="/cart"
+								element={<CartPage stripePromise={stripePromise} />}
+							></Route>
+							<Route
+								path="/payment-success/:id"
+								element={<SuccessPage />}
+							></Route>
+							<Route path="/news/:id" element={<NewsDetail />}></Route>
+							<Route path="*" element={<NoMatch />}></Route>
+						</Routes>
+						<ToastContainer
+							position="top-center"
+							autoClose={1500}
+							hideProgressBar
+							newestOnTop
+							closeOnClick
+							rtl={false}
+							draggable
+							theme="colored"
+							limit={1}
+						/>
+					</div>
 					<Footer />
 				</BrowserRouter>
 			</AuthContext.Provider>

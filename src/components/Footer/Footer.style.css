@@ -4,7 +4,14 @@
 	}
 }
 @media (max-width: 768px) {
-	.info-section {
+	.footer {
 		text-align: center;
 	}
+}
+
+.footer {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	right: 0;
 }

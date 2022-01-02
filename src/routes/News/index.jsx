@@ -132,7 +132,7 @@ const News = () => {
 					<h2 className="mb-4">Loading News...</h2>
 				) : (
 					<>
-						<h1>News</h1>
+						<h2>News</h2>
 						{tagFilter && (
 							<div className="d-flex align-items-center">
 								<span>Showing results for</span>
