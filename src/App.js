@@ -28,8 +28,41 @@ const stripePromise = loadStripe(
 
 export const AuthContext = createContext();
 
+export const useFetchCart = () => {
+	const [cartData, setCartData] = useState(null);
+	const [isFetchingCart, setFetchingCart] = useState(true);
+
+	const fetchCart = async () => {
+		const token = localStorage.getItem("token");
+
+		if (!token) {
+			// redirect/open login modal
+			return;
+		}
+
+		try {
+			const res = await api.get("api/cart");
+
+			if (res.data.success) {
+				setCartData(res.data.data);
+			}
+		} catch (err) {
+			console.log(err);
+		} finally {
+			setFetchingCart(false);
+		}
+	};
+
+	useEffect(() => {
+		fetchCart();
+	});
+
+	return { cartData, fetchCart, isFetchingCart, setFetchingCart };
+};
+
 function App() {
 	const [user, setUser] = useState(null);
+	const { fetchCart } = useFetchCart();
 
 	const fetchUser = async () => {
 		const token = localStorage.getItem("token");
@@ -52,6 +85,8 @@ function App() {
 
 	useEffect(() => {
 		fetchUser();
+		fetchCart();
+		// eslint-disable-next-line
 	}, []);
 
 	return (

@@ -50,7 +50,6 @@ const SignUpForm = ({ close, clickLinkEvent }) => {
 			lastName: "",
 		},
 		validate,
-		// to be changed later
 		onSubmit: async (values) => {
 			setLoading(true);
 			const { email, password, firstName, lastName } = values;

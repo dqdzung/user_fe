@@ -8,3 +8,7 @@
 	color: white;
   cursor: pointer;
 }
+
+.cart-count {
+  position: relative;
+}

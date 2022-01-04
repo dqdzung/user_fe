@@ -1,16 +1,18 @@
 import { useState, useContext } from "react";
-import { Container, Navbar, Nav, NavDropdown } from "react-bootstrap";
+import { Container, Navbar, Nav, NavDropdown, Badge } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import "./MainNav.style.css";
 import LoginModal from "../Modals/LoginModal";
 import SignUpModal from "../Modals/SignUpModal";
 import { AuthContext } from "../../App";
+import { useFetchCart } from "../../App";
 
 const MainNav = () => {
 	const [showLogin, setShowLogin] = useState(false);
 	const [showSignUp, setShowSignUp] = useState(false);
 	const { user, setUser } = useContext(AuthContext);
 	const navigate = useNavigate();
+	const { cartData } = useFetchCart();
 
 	const showModal = (type) => {
 		if (type === "login") {
@@ -63,7 +65,14 @@ const MainNav = () => {
 										navigate("/cart");
 									}}
 								>
-									Cart
+									<div className="cart-icon">
+										<i className="fas fa-shopping-cart" />
+										{cartData && (
+											<Badge className="mx-1 cart-count" bg="danger" pill>
+												{cartData.itemCount}
+											</Badge>
+										)}
+									</div>
 								</div>
 								<NavDropdown title={user.firstName}>
 									<NavDropdown.Item

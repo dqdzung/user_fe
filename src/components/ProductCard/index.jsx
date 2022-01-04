@@ -38,7 +38,6 @@ const ProductCard = ({ data, onClickTag }) => {
 	};
 
 	return (
-		// <Col xs={12} lg={6} className="p-4">
 		<Card>
 			<Link to={`/products/${_id}`} className="text-reset text-decoration-none">
 				<Card.Img variant="top" src={avatar || placeholderImg} />
@@ -91,7 +90,6 @@ const ProductCard = ({ data, onClickTag }) => {
 				</div>
 			</Card.Body>
 		</Card>
-		// </Col>
 	);
 };
 

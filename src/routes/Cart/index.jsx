@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Helmet } from "react-helmet";
 import { Container, Row, Col, Button, Spinner, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
@@ -9,6 +9,7 @@ import {
 	useElements,
 	useStripe,
 } from "@stripe/react-stripe-js";
+import { useFetchCart } from "../../App";
 
 import api from "../../api";
 import "./CartPage.style.css";
@@ -122,37 +123,11 @@ const PaymentForm = ({ cart, disabled }) => {
 };
 
 const CartPage = ({ stripePromise }) => {
-	const [cart, setCart] = useState(null);
-	const [isLoading, setLoading] = useState(true);
-
-	const fetchCart = async () => {
-		const token = localStorage.getItem("token");
-
-		if (!token) {
-			// redirect/open login modal
-			return;
-		}
-
-		try {
-			const res = await api.get("api/cart");
-
-			if (res.data.success) {
-				setCart(res.data.data);
-				setLoading(false);
-			}
-		} catch (err) {
-			console.log(err);
-		} finally {
-			setLoading(false);
-		}
-	};
-
-	useEffect(() => {
-		fetchCart();
-	}, []);
+	const { cartData, fetchCart, isFetchingCart, setFetchingCart } =
+		useFetchCart();
 
 	const handleQuantityChange = async (e, id, quantity) => {
-		setLoading(true);
+		setFetchingCart(true);
 
 		const payload = {
 			productId: id,
@@ -170,7 +145,7 @@ const CartPage = ({ stripePromise }) => {
 	};
 
 	const handleRemoveItem = async (id) => {
-		setLoading(true);
+		setFetchingCart(true);
 		try {
 			const res = await api.put("api/cart/item/remove", {
 				productId: id,
@@ -193,12 +168,12 @@ const CartPage = ({ stripePromise }) => {
 				<Container>
 					<div className="d-flex align-items-center">
 						<h2>Your Cart</h2>
-						{isLoading && (
+						{isFetchingCart && (
 							<Spinner animation="border" size="sm" className="mx-2" />
 						)}
 					</div>
-					{!cart ? (
-						!isLoading && (
+					{!cartData ? (
+						!isFetchingCart && (
 							<h4>
 								Your cart is empty.{" "}
 								<Link to="/products">Go shop something!</Link>
@@ -208,11 +183,11 @@ const CartPage = ({ stripePromise }) => {
 						<Row className="gx-5">
 							<Col xs={12} md={12} lg={8} className="py-2">
 								<Row className="gy-3 px-3">
-									{cart.products.map((product) => {
+									{cartData.products.map((product) => {
 										return (
 											<Col
 												xs={12}
-												className="p-1 cart-item"
+												className="p-1 cart-item d-flex align-items-center justify-content-between"
 												key={product.product._id}
 											>
 												<Row>
@@ -265,7 +240,7 @@ const CartPage = ({ stripePromise }) => {
 																		product.quantity
 																	);
 																}}
-																disabled={isLoading}
+																disabled={isFetchingCart}
 															/>
 															<input type="number" value={product.quantity} />
 															<input
@@ -278,21 +253,21 @@ const CartPage = ({ stripePromise }) => {
 																		product.quantity
 																	);
 																}}
-																disabled={isLoading}
+																disabled={isFetchingCart}
 															/>
 														</div>
-														<Button
-															variant="danger"
-															className="mx-4"
-															onClick={() => {
-																handleRemoveItem(product.product._id);
-															}}
-															disabled={isLoading}
-														>
-															Remove
-														</Button>
 													</Col>
 												</Row>
+												<Button
+													variant="danger"
+													className="remove-btn"
+													onClick={() => {
+														handleRemoveItem(product.product._id);
+													}}
+													disabled={isFetchingCart}
+												>
+													<b>X</b>
+												</Button>
 											</Col>
 										);
 									})}
@@ -308,13 +283,15 @@ const CartPage = ({ stripePromise }) => {
 										</Col>
 										<Col xs={3} className="d-flex flex-column align-items-end">
 											<h5>
-												<s>${cart.listedTotal}</s>
+												<s>${cartData.listedTotal}</s>
 											</h5>
-											<h5>${cart.discountTotal}</h5>
-											<div>${cart.listedTotal - cart.discountTotal}</div>
+											<h5>${cartData.discountTotal}</h5>
+											<div>
+												${cartData.listedTotal - cartData.discountTotal}
+											</div>
 										</Col>
 									</Row>
-									<PaymentForm cart={cart} disabled={isLoading} />
+									<PaymentForm cart={cartData} disabled={isFetchingCart} />
 									<span className="text-muted text-center mt-2">
 										Powered by{" "}
 										<svg focusable="false" width="33" height="15">
