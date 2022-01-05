@@ -111,7 +111,7 @@ const Products = () => {
 	const [searchTerm, setTerm] = useState(searchParams.get("name"));
 	const [totalPage, setTotalPage] = useState(0);
 	const [currentPage, setCurrentPage] = useState(searchParams.get("page") || 1);
-	const pageSize = 6;
+	const pageSize = 12;
 	const searchInputRef = useRef(null);
 	const [tagFilter, setTag] = useState(searchParams.get("tag"));
 

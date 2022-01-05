@@ -64,14 +64,13 @@ export const useFetchCart = () => {
 
 	useEffect(() => {
 		fetchCart();
-	});
+	}, []);
 
 	return { cartData, fetchCart, isFetchingCart, setFetchingCart };
 };
 
 function App() {
 	const [user, setUser] = useState(null);
-	const { fetchCart } = useFetchCart();
 
 	const fetchUser = async () => {
 		const token = localStorage.getItem("token");
@@ -94,7 +93,6 @@ function App() {
 
 	useEffect(() => {
 		fetchUser();
-		fetchCart();
 		// eslint-disable-next-line
 	}, []);
 
