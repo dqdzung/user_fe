@@ -173,38 +173,10 @@ const PastPurchase = () => {
 													<Col
 														md={12}
 														lg={6}
-														className="d-flex align-items-center justify-content-center"
+														className="d-flex align-items-center timeline"
 													>
-														{/* {order.status === "ordered" && (
-															<ProgressBar
-																now={33}
-																label={order.status}
-																className="w-100"
-															/>
-														)}
-														{order.status === "in_progress" && (
-															<ProgressBar
-																now={66}
-																label={order.status}
-																className="w-100"
-															/>
-														)}
-														{order.status === "completed" && (
-															<ProgressBar
-																now={100}
-																label={order.status}
-																variant="success"
-																className="w-100"
-															/>
-														)} */}
 														<section className="time-line-box">
 															<div className="swiper-wrapper">
-																{/* <div className="swiper-slide">
-																	<div className="mb-2 date">12.07.2019</div>
-																	<div className="status">
-																		<span>Work</span>
-																	</div>
-																</div> */}
 																{order.orderStatus.map((status) => {
 																	if (status.isCompleted) {
 																		return (
@@ -241,57 +213,70 @@ const PastPurchase = () => {
 														</section>
 													</Col>
 													<Col md={12} lg={6} className="mt-3">
-														<div className="d-flex align-items-center order-total justify-content-end">
-															<b className="mx-3">Order Total:</b>
-															<span className="total-price price">
-																{currencyFormatter(order.totalAmount)}
-															</span>
-														</div>
-														<Button
-															className="mt-4 order-btn mx-1"
-															variant="warning"
-															onClick={() => {
-																handleBuyAgain(order.items);
-															}}
-															disabled={isFetching}
-														>
-															{isFetching ? (
-																<Spinner
-																	as="span"
-																	animation="border"
-																	size="sm"
-																	role="status"
-																	aria-hidden="true"
-																/>
-															) : (
-																"Buy Again"
-															)}
-														</Button>
-														{order.status === "ordered" && (
-															<Button
-																className="mt-4 order-btn mx-1"
-																variant="danger"
-																onClick={() => {
-																	handleRefund(
-																		order.paymentIntentId,
-																		order._id
-																	);
-																}}
-																disabled={isFetching}
+														<Row className="g-4">
+															<Col
+																xs={6}
+																lg={12}
+																className="d-flex align-items-center order-total justify-content-end"
 															>
-																{isFetching ? (
-																	<Spinner
-																		as="span"
-																		animation="border"
-																		size="sm"
-																		role="status"
-																		aria-hidden="true"
-																	/>
-																) : (
-																	"Cancel"
+																<b className="">Order Total: </b>
+																<span className="mx-1 total-price price">
+																	{currencyFormatter(order.totalAmount)}
+																</span>
+															</Col>
+
+															<Col
+																xs={6}
+																lg={12}
+																className="d-flex align-items-center justify-content-end"
+															>
+																<Button
+																	className="order-btn mx-1"
+																	variant="warning"
+																	onClick={() => {
+																		handleBuyAgain(order.items);
+																	}}
+																	disabled={isFetching}
+																>
+																	{isFetching ? (
+																		<Spinner
+																			as="span"
+																			animation="border"
+																			size="sm"
+																			role="status"
+																			aria-hidden="true"
+																		/>
+																	) : (
+																		"Buy Again"
+																	)}
+																</Button>
+																{order.status === "ordered" && (
+																	<Button
+																		className="order-btn mx-1"
+																		variant="danger"
+																		onClick={() => {
+																			handleRefund(
+																				order.paymentIntentId,
+																				order._id
+																			);
+																		}}
+																		disabled={isFetching}
+																	>
+																		{isFetching ? (
+																			<Spinner
+																				as="span"
+																				animation="border"
+																				size="sm"
+																				role="status"
+																				aria-hidden="true"
+																			/>
+																		) : (
+																			"Cancel"
+																		)}
+																	</Button>
 																)}
-															</Button>
-														)}
+															</Col>
+														</Row>
 													</Col>
 												</Row>
 											</Col>
