@@ -96,12 +96,8 @@ const Home = () => {
 							</div>
 						) : (
 							homeData.isHot.map((item) => (
-								<Col xs={12} lg={6} className="p-4">
-									<ProductCard
-										key={item._id}
-										data={item}
-										onClickTag={handleClickTag}
-									/>
+								<Col xs={12} lg={6} className="p-4" key={item._id}>
+									<ProductCard data={item} onClickTag={handleClickTag} />
 								</Col>
 							))
 						)}

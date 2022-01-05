@@ -20,7 +20,7 @@ import api from "../../api";
 import "./ProductDetail.style.css";
 import placeholderImg from "../../components/ProductCard/placeholder-image.png";
 
-import { AuthContext } from "../../App";
+import { AuthContext, currencyFormatter } from "../../App";
 import ProductCard from "../../components/ProductCard";
 import { buildTagQuery } from "../NewsDetail";
 import { toast } from "react-toastify";
@@ -185,12 +185,12 @@ const ProductDetail = () => {
 										<div className="text-muted d-flex align-items-center my-1">
 											Was:{" "}
 											<s className="mx-3">
-												<b>{`$${data.listedPrice}`}</b>
+												<b>{currencyFormatter(data.listedPrice)}</b>
 											</s>
 										</div>
 										<div className="text-muted d-flex align-items-center my-1">
 											Price:{" "}
-											<span className="detail-price mx-3">{`$${data.discountPrice}`}</span>
+											<span className="detail-price mx-3">{currencyFormatter(data.discountPrice)}</span>
 										</div>
 									</>
 								)}

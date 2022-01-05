@@ -9,7 +9,7 @@ import {
 	useElements,
 	useStripe,
 } from "@stripe/react-stripe-js";
-import { useFetchCart } from "../../App";
+import { useFetchCart, currencyFormatter } from "../../App";
 
 import api from "../../api";
 import "./CartPage.style.css";
@@ -216,10 +216,10 @@ const CartPage = ({ stripePromise }) => {
 																	<h4>{product.product.name}</h4>
 																</Link>
 																<div className="px-1">
-																	<s>${product.product.listedPrice}</s>
+																	<s>{currencyFormatter(product.product.listedPrice)}</s>
 																</div>
 																<div className="px-1 price">
-																	${product.product.discountPrice}
+																	{currencyFormatter(product.product.discountPrice)}
 																</div>
 															</div>
 														</div>

@@ -29,3 +29,63 @@
 	min-width: 100px;
 	float: right;
 }
+
+.time-line-box .timeline {
+	list-style-type: none;
+	display: flex;
+	padding: 0;
+	text-align: center;
+}
+
+.time-line-box .timestamp {
+	margin: auto;
+	margin-bottom: 5px;
+	padding: 0px 4px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.time-line-box .status {
+	padding: 0px 10px;
+	display: flex;
+	justify-content: center;
+	border-top: 2px solid rgba(0, 0, 0, 1);
+	position: relative;
+	transition: all 200ms ease-in;
+}
+
+.time-line-box .status span {
+	padding-top: 8px;
+}
+
+.time-line-box .status span:before {
+	content: "";
+	width: 12px;
+	height: 12px;
+	background-color: green;
+	border-radius: 12px;
+	border: 2px solid white;
+	position: absolute;
+	left: 50%;
+	top: -1px;
+	-webkit-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	transition: all 200ms ease-in;
+}
+
+.swiper-wrapper {
+	display: inline-flex;
+	flex-direction: row;
+	overflow-y: auto;
+	justify-content: center;
+}
+
+.swiper-slide {
+	text-align: center;
+	font-size: 12px;
+	width: 120px;
+	height: 100%;
+	position: relative;
+}

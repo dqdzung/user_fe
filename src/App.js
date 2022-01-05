@@ -28,6 +28,15 @@ const stripePromise = loadStripe(
 
 export const AuthContext = createContext();
 
+export const currencyFormatter = (number) => {
+	const formatter = new Intl.NumberFormat("en-US", {
+		style: "currency",
+		currency: "USD",
+		maximumFractionDigits: 0,
+	});
+	return formatter.format(number);
+};
+
 export const useFetchCart = () => {
 	const [cartData, setCartData] = useState(null);
 	const [isFetchingCart, setFetchingCart] = useState(true);

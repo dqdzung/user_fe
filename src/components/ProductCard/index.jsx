@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 
 import "./ProductCard.style.css";
 import placeholderImg from "./placeholder-image.png";
-import { AuthContext } from "../../App";
+import { AuthContext, currencyFormatter } from "../../App";
 
 const ProductCard = ({ data, onClickTag }) => {
 	const { user } = useContext(AuthContext);
@@ -64,9 +64,9 @@ const ProductCard = ({ data, onClickTag }) => {
 				<div className="d-flex align-items-center justify-content-between">
 					<div className="d-flex">
 						<div className="price px-1 text-muted">
-							<s>{`US$${listedPrice}`}</s>
+							<s>{currencyFormatter(listedPrice)}</s>
 						</div>
-						<div className="price px-1">{`US$${discountPrice}`}</div>
+						<div className="price px-1">{currencyFormatter(discountPrice)}</div>
 					</div>
 					<Button
 						variant="warning"

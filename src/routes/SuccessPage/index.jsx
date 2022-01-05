@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 
 import api from "../../api";
 import "./SuccessPage.style.css";
+import { currencyFormatter } from "../../App";
 
 const SuccessPage = () => {
 	const { id } = useParams();
@@ -54,7 +55,7 @@ const SuccessPage = () => {
 										<Row className="text-center">
 											<Col>{item.productId.name}</Col>
 											<Col>x{item.purchaseQty}</Col>
-											<Col>{item.payablePrice}</Col>
+											<Col>{currencyFormatter(item.payablePrice)}</Col>
 										</Row>
 									</Col>
 								))}

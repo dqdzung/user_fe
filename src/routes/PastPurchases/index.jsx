@@ -5,8 +5,9 @@ import { Link, useSearchParams, useLocation } from "react-router-dom";
 import api from "../../api";
 import "./PastPurchases.style.css";
 import { PaginationComp } from "../Products";
-import { ProgressBar } from "react-bootstrap";
+import moment from "moment";
 import { toast } from "react-toastify";
+import { currencyFormatter } from "../../App";
 
 const PastPurchase = () => {
 	const [orders, setOrders] = useState(null);
@@ -161,16 +162,20 @@ const PastPurchase = () => {
 															</span>
 														</div>
 														<div className="d-flex align-items-center price">
-															${item.payablePrice}
+															{currencyFormatter(item.payablePrice)}
 														</div>
 													</div>
 												</Col>
 											))}
 											<hr className="text-muted" />
 											<Col xs={12}>
-												<Row>
-													<Col xs={6} className="d-flex align-items-center">
-														{order.status === "ordered" && (
+												<Row className="purchase-card-footer">
+													<Col
+														md={12}
+														lg={6}
+														className="d-flex align-items-center justify-content-center"
+													>
+														{/* {order.status === "ordered" && (
 															<ProgressBar
 																now={33}
 																label={order.status}
@@ -191,13 +196,55 @@ const PastPurchase = () => {
 																variant="success"
 																className="w-100"
 															/>
-														)}
+														)} */}
+														<section className="time-line-box">
+															<div className="swiper-wrapper">
+																{/* <div className="swiper-slide">
+																	<div className="mb-2 date">12.07.2019</div>
+																	<div className="status">
+																		<span>Work</span>
+																	</div>
+																</div> */}
+																{order.orderStatus.map((status) => {
+																	if (status.isCompleted) {
+																		return (
+																			<div
+																				className="swiper-slide"
+																				key={status._id}
+																			>
+																				<div className="mb-2 date">
+																					{moment(status.date).format(
+																						"DD/MM/YYYY, HH:MM"
+																					)}
+																				</div>
+																				<div className="status">
+																					<span>{status.type}</span>
+																				</div>
+																			</div>
+																		);
+																	}
+																	return <></>;
+																})}
+																{order.isCancel && (
+																	<div className="swiper-slide">
+																		<div className="mb-2 date">
+																			{moment(order.updatedAt).format(
+																				"DD/MM/YYYY, HH:MM"
+																			)}
+																		</div>
+																		<div className="status">
+																			<span>cancelled</span>
+																		</div>
+																	</div>
+																)}
+															</div>
+														</section>
 													</Col>
-													<Col xs={6}>
+													<Col md={12} lg={6} className="mt-3">
 														<div className="d-flex align-items-center order-total justify-content-end">
-															<span className="mx-3">Order Total:</span>
+															<b className="mx-3">Order Total:</b>
 															<span className="total-price price">
-																${order.totalAmount}
+																{currencyFormatter(order.totalAmount)}
 															</span>
 														</div>
 														<Button
