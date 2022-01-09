@@ -6,12 +6,13 @@ import { toast } from "react-toastify";
 
 import "./ProductCard.style.css";
 import placeholderImg from "./placeholder-image.png";
-import { AuthContext, currencyFormatter } from "../../App";
+import { AuthContext, CartContext, currencyFormatter } from "../../App";
 
 const ProductCard = ({ data, onClickTag }) => {
 	const { user } = useContext(AuthContext);
 	const [isLoading, setLoading] = useState(false);
 	const { avatar, name, listedPrice, tags, discountPrice, _id } = data;
+	const { fetchCart } = useContext(CartContext);
 
 	const handleAddCart = async (id) => {
 		if (!user) {
@@ -28,6 +29,7 @@ const ProductCard = ({ data, onClickTag }) => {
 
 			if (res.data.success) {
 				setLoading(false);
+				fetchCart();
 				toast.success("Item added to cart!");
 			}
 		} catch (err) {

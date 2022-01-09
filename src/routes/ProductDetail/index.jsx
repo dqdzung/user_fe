@@ -20,7 +20,7 @@ import api from "../../api";
 import "./ProductDetail.style.css";
 import placeholderImg from "../../components/ProductCard/placeholder-image.png";
 
-import { AuthContext, currencyFormatter } from "../../App";
+import { AuthContext, CartContext, currencyFormatter } from "../../App";
 import ProductCard from "../../components/ProductCard";
 import { buildTagQuery } from "../NewsDetail";
 import { toast } from "react-toastify";
@@ -41,6 +41,7 @@ const ProductDetail = () => {
 	const { user } = useContext(AuthContext);
 	const [relatedProducts, setRelatedProducts] = useState(null);
 	const navigate = useNavigate();
+	const { fetchCart } = useContext(CartContext);
 
 	const fetchProduct = async (id) => {
 		try {
@@ -115,6 +116,7 @@ const ProductDetail = () => {
 			if (res.data.success) {
 				setAddingCart(false);
 				setQuantity(1);
+				fetchCart();
 				toast.success("Item added to cart!");
 			}
 		} catch (err) {
@@ -190,7 +192,9 @@ const ProductDetail = () => {
 										</div>
 										<div className="text-muted d-flex align-items-center my-1">
 											Price:{" "}
-											<span className="detail-price mx-3">{currencyFormatter(data.discountPrice)}</span>
+											<span className="detail-price mx-3">
+												{currencyFormatter(data.discountPrice)}
+											</span>
 										</div>
 									</>
 								)}

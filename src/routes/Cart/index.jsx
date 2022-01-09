@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Helmet } from "react-helmet";
 import { Container, Row, Col, Button, Spinner, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
@@ -9,7 +9,8 @@ import {
 	useElements,
 	useStripe,
 } from "@stripe/react-stripe-js";
-import { useFetchCart, currencyFormatter } from "../../App";
+import { currencyFormatter } from "../../App";
+import { CartContext } from "../../App";
 
 import api from "../../api";
 import "./CartPage.style.css";
@@ -123,8 +124,8 @@ const PaymentForm = ({ cart, disabled }) => {
 };
 
 const CartPage = ({ stripePromise }) => {
-	const { cartData, fetchCart, isFetchingCart, setFetchingCart } =
-		useFetchCart();
+	const { cartData, isFetchingCart, setFetchingCart, fetchCart } =
+		useContext(CartContext);
 
 	const handleQuantityChange = async (e, id, quantity) => {
 		setFetchingCart(true);
@@ -216,10 +217,16 @@ const CartPage = ({ stripePromise }) => {
 																	<h4>{product.product.name}</h4>
 																</Link>
 																<div className="px-1">
-																	<s>{currencyFormatter(product.product.listedPrice)}</s>
+																	<s>
+																		{currencyFormatter(
+																			product.product.listedPrice
+																		)}
+																	</s>
 																</div>
 																<div className="px-1 price">
-																	{currencyFormatter(product.product.discountPrice)}
+																	{currencyFormatter(
+																		product.product.discountPrice
+																	)}
 																</div>
 															</div>
 														</div>

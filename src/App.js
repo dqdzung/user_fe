@@ -27,6 +27,7 @@ const stripePromise = loadStripe(
 );
 
 export const AuthContext = createContext();
+export const CartContext = createContext();
 
 export const currencyFormatter = (number) => {
 	const formatter = new Intl.NumberFormat("en-US", {
@@ -37,9 +38,29 @@ export const currencyFormatter = (number) => {
 	return formatter.format(number);
 };
 
-export const useFetchCart = () => {
+function App() {
+	const [user, setUser] = useState(null);
 	const [cartData, setCartData] = useState(null);
 	const [isFetchingCart, setFetchingCart] = useState(true);
+
+	const fetchUser = async () => {
+		const token = localStorage.getItem("token");
+		if (!token) {
+			return;
+		}
+		try {
+			const res = await api({
+				url: "/api/user/me",
+				method: "GET",
+			});
+
+			if (res.status === 200) {
+				setUser(res.data.user);
+			}
+		} catch (err) {
+			console.log(err);
+		}
+	};
 
 	const fetchCart = async () => {
 		const token = localStorage.getItem("token");
@@ -63,36 +84,8 @@ export const useFetchCart = () => {
 	};
 
 	useEffect(() => {
-		fetchCart();
-	}, []);
-
-	return { cartData, fetchCart, isFetchingCart, setFetchingCart };
-};
-
-function App() {
-	const [user, setUser] = useState(null);
-
-	const fetchUser = async () => {
-		const token = localStorage.getItem("token");
-		if (!token) {
-			return;
-		}
-		try {
-			const res = await api({
-				url: "/api/user/me",
-				method: "GET",
-			});
-
-			if (res.status === 200) {
-				setUser(res.data.user);
-			}
-		} catch (err) {
-			console.log(err);
-		}
-	};
-
-	useEffect(() => {
 		fetchUser();
+		fetchCart();
 		// eslint-disable-next-line
 	}, []);
 
@@ -102,46 +95,50 @@ function App() {
 				<title>{document.title}</title>
 			</Helmet>
 			<AuthContext.Provider value={{ user, setUser }}>
-				<BrowserRouter>
-					<MainNav />
-					<div className="main-content">
-						<Routes>
-							<Route path="/" element={<Home />}></Route>
-							<Route path="/products" element={<Products />}></Route>
-							<Route path="/news" element={<News />}></Route>
-							<Route path="/about" element={<About />}></Route>
-							<ProtectedRoute path="/user" element={<UserPage />}>
-								<Route path="/user" element={<Navigate to="me" />} />
-								<Route path="me" element={<Profile />} />
-								<Route path="purchase" element={<PastPurchase />} />
-							</ProtectedRoute>
-							<Route path="/contact" element={<Contact />}></Route>
-							<Route path="/products/:id" element={<ProductDetail />}></Route>
-							<Route
-								path="/cart"
-								element={<CartPage stripePromise={stripePromise} />}
-							></Route>
-							<Route
-								path="/payment-success/:id"
-								element={<SuccessPage />}
-							></Route>
-							<Route path="/news/:id" element={<NewsDetail />}></Route>
-							<Route path="*" element={<NoMatch />}></Route>
-						</Routes>
-						<ToastContainer
-							position="top-center"
-							autoClose={1500}
-							hideProgressBar
-							newestOnTop
-							closeOnClick
-							rtl={false}
-							draggable
-							theme="colored"
-							limit={1}
-						/>
-					</div>
-					<Footer />
-				</BrowserRouter>
+				<CartContext.Provider
+					value={{ cartData, isFetchingCart, setFetchingCart, fetchCart }}
+				>
+					<BrowserRouter>
+						<MainNav />
+						<div className="main-content">
+							<Routes>
+								<Route path="/" element={<Home />}></Route>
+								<Route path="/products" element={<Products />}></Route>
+								<Route path="/news" element={<News />}></Route>
+								<Route path="/about" element={<About />}></Route>
+								<ProtectedRoute path="/user" element={<UserPage />}>
+									<Route path="/user" element={<Navigate to="me" />} />
+									<Route path="me" element={<Profile />} />
+									<Route path="purchase" element={<PastPurchase />} />
+								</ProtectedRoute>
+								<Route path="/contact" element={<Contact />}></Route>
+								<Route path="/products/:id" element={<ProductDetail />}></Route>
+								<Route
+									path="/cart"
+									element={<CartPage stripePromise={stripePromise} />}
+								></Route>
+								<Route
+									path="/payment-success/:id"
+									element={<SuccessPage />}
+								></Route>
+								<Route path="/news/:id" element={<NewsDetail />}></Route>
+								<Route path="*" element={<NoMatch />}></Route>
+							</Routes>
+							<ToastContainer
+								position="top-center"
+								autoClose={1500}
+								hideProgressBar
+								newestOnTop
+								closeOnClick
+								rtl={false}
+								draggable
+								theme="colored"
+								limit={1}
+							/>
+						</div>
+						<Footer />
+					</BrowserRouter>
+				</CartContext.Provider>
 			</AuthContext.Provider>
 		</div>
 	);

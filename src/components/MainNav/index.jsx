@@ -4,15 +4,14 @@ import { Link, useNavigate } from "react-router-dom";
 import "./MainNav.style.css";
 import LoginModal from "../Modals/LoginModal";
 import SignUpModal from "../Modals/SignUpModal";
-import { AuthContext } from "../../App";
-import { useFetchCart } from "../../App";
+import { AuthContext, CartContext } from "../../App";
 
 const MainNav = () => {
 	const [showLogin, setShowLogin] = useState(false);
 	const [showSignUp, setShowSignUp] = useState(false);
 	const { user, setUser } = useContext(AuthContext);
 	const navigate = useNavigate();
-	const { cartData } = useFetchCart();
+	const { cartData } = useContext(CartContext);
 
 	const showModal = (type) => {
 		if (type === "login") {
