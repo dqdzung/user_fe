@@ -1,1 +1,1 @@
-Hosting URL: x-career-user-fe.web.app
+URL: https://x-career-user-fe.web.app
