@@ -38,6 +38,7 @@ const PaymentForm = ({ cart, disabled }) => {
 	const stripe = useStripe();
 	const [isDisabled, setDisabled] = useState(true);
 	const navigate = useNavigate();
+	const { fetchCart } = useContext(CartContext);
 
 	const handlePayment = async (e) => {
 		e.preventDefault();
@@ -86,6 +87,7 @@ const PaymentForm = ({ cart, disabled }) => {
 					};
 
 					const res = await api.post("api/order/user/addOrder", payload);
+					await fetchCart();
 					navigate(`/payment-success/${res.data.order._id}`);
 				}
 			}
