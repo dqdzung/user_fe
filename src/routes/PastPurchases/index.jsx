@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Row, Col, Button, Spinner } from "react-bootstrap";
 import { Link, useSearchParams, useLocation } from "react-router-dom";
 import api from "../../api";
@@ -8,6 +8,7 @@ import { PaginationComp } from "../Products";
 import moment from "moment";
 import { toast } from "react-toastify";
 import { currencyFormatter } from "../../App";
+import {  CartContext } from "../../App";
 
 const PastPurchase = () => {
 	const [orders, setOrders] = useState(null);
@@ -19,6 +20,7 @@ const PastPurchase = () => {
 	const pageSize = 10;
 
 	const location = useLocation();
+	const { fetchCart } = useContext(CartContext);
 
 	const fetchPurchases = async () => {
 		setLoading(true);
@@ -68,6 +70,7 @@ const PastPurchase = () => {
 				console.log(err);
 			}
 		}
+    await fetchCart();
 		toast.success(`${addedItems} items added to cart!`);
 		setIsFetching(false);
 	};
