@@ -240,8 +240,8 @@ const Products = () => {
 		}
 
 		return items.map((item) => (
-			<Col xs={12} xl={6}>
-				<ProductCard key={item._id} data={item} onClickTag={onClickTag} />
+			<Col xs={12} xl={6} key={item._id}>
+				<ProductCard data={item} onClickTag={onClickTag} />
 			</Col>
 		));
 	};
